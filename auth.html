@@ -1,0 +1,21 @@
+<div class="authBackground">
+	<div class="authBox authBoxBlurred"></div>
+	<div id="authorize-div" class="authBox">
+		<div class="authText">
+			<img src="IMG/logo.png">
+		</div>
+		<button class="authButton" ng-show="!ready"><img src="IMG/loading.gif"></button>
+		<button class="authButton" ng-click="loadAPI(event)" ng-show="ready">LOAD MAP</button>
+	</div>
+	<div id="loading-div" class="authBox">
+		<div class="displayLoading">
+			<img ng-src="{{loadingIcon}}"><br>
+			Fetching map data...<br>
+			<progress id="progress" max="100"></progress>
+		</div>
+	</div>
+	<!--<button class="surveyButton" ng-mouseenter="survey=true" ng-mouseleave="survey=false" ng-click="openSurvey()">!</button>
+	<div class="surveyFlag stretchLeft" ng-show="survey">
+		<div style="margin-top:12px">Fill out the feedback survey</div>
+	</div> -->
+</div>
