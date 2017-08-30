@@ -52,6 +52,20 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         });
     };
 
+    // WIP: Fetches sprites from Team G Google Sheets
+    function fetchCharacterImages() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "COLUMNS",
+            valueRenderOption: "FORMULA",
+            // Obtain all images from all columns at row 5
+            range: 'Character Tracker!B5:AZ5',
+        }).then(function(response) {
+            characterImages = response.result.values[0];
+            updateProgressBar();
+        });
+    }
+
     /*function fetchTerrainIndex(){
     	gapi.client.sheets.spreadsheets.values.get({
     		spreadsheetId: sheetId,
