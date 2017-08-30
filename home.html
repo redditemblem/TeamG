@@ -1,11 +1,11 @@
 <div id="dropArea" class="mapBox">
 	<img id="map" class="absolutePos" src="http://i.imgur.com/YbzANlL.png">
-	
+
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="glowBoxIndent absolutePos" ng-style="{top: determineGlowY(yIndex)}">
 		<div class="glowBox" ng-repeat="(indexX,column) in columns" title="{{row}}{{column}}" ng-style="{left: determineGlowX(indexX)}"></div>
 	</div>
-	
+
 	<!--Draw characters-->
 	<div ng-repeat="char in charaData">
 		<div id="char_{{$index}}" ng-if="validPosition(char.position)" ng-click="displayData('char_'+$index)" class="absolutePos charDiv hoverImage" title="{{char.position}}" ng-style="{top: determineCharY(char.position), left: determineCharX(char.position), zindex: determineCharZIndex(char.position)}">
@@ -23,7 +23,7 @@
 			<div ng-if="isPaired(char.pairUpPartner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 		</div>
 	</div>
-	
+
 	<!--Draw enemies-->
 	<div ng-repeat="enemy in enemyData">
 		<div id="enmy_{{$index}}" ng-if="validPosition(enemy.position)" ng-click="displayData('enmy_'+$index)" class="absolutePos charDiv hoverImage" title="{{enemy.position}}" ng-style="{top: determineCharY(enemy.position), left: determineCharX(enemy.position)}">
@@ -42,7 +42,7 @@
 			<div ng-if="enemy[0]=='Outlaw (M)' || enemy[0] == 'Outlaw (F)'" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>-->
 		</div>
 	</div>
-	
+
 	<!--Enemy Info Box-->
 	<div id="{{eIndex}}_box" ng-repeat="(eIndex,enemy) in enemyData" class="enemyInfo" draggable="true" ng-show="checkCharToggle(eIndex)">
 		<!--Buttons-->
@@ -103,19 +103,19 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--Skill Gems-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
 		<div ng-repeat="skill in enemy.skills" class="infoElement hoverImage enemyGemPos" ng-mouseover="skillHoverIn(eIndex, $index)" ng-mouseleave="skillHoverOut(eIndex, $index)" ng-style="{left: fetchESklHorzPos($index)}">
 			<img ng-src="{{fetchSkillImage(skill.name, enemy.level, $index)}}">
 		</div>
-		
+
 		<!--Enemy Stats (Str/Mag/Skl/Etc)-->
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText enemyStatPos hoverBrown" ng-mouseover="statHoverIn(eIndex, stat[0])" ng-mouseleave="statHoverOut(eIndex, stat[0])" ng-style="{top: fetchEStatVerticalPos($index)}">
 			<span class="enemyStatLabel">{{stat[0]}}</span>
 			<span class="indentedEnemyStat" ng-style="{color: determineStatColor(eIndex, $index, stat[0], 1)}">{{enemy[stat[0]]}}</span>
 		</div>
-		
+
 		<!--Inventory-->
 		<div ng-repeat="weapon in enemy.inventory" ng-mouseenter="weaponHoverIn(eIndex, $index)" ng-mouseleave="weaponHoverOut(eIndex, $index)" class="infoElement redText hoverTan enemyInventoryBoxPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchEWeaponVerticalPos($index)}">
 			<span class="indentedEWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{getWeaponClassIcon(weapon.class)}}"/></span>
@@ -128,7 +128,7 @@
 				<img ng-if="weaponEffective(weapon.effect,'monster')" src="IMG/eff_monster.png">
 			</div>
 		</div>
-		
+
 		<!--Weapon ranks-->
 		<div ng-repeat="w in enemy.weaponRanks" class="infoElement enemyWeaponRankPos" ng-style="{left: fetchEWpnRankHorzPos($index)}">
 			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
@@ -136,22 +136,21 @@
 				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
 			</span>
 		</div>
-		
+
 		<!--Skill Gem Info Boxes-->
 		<div ng-repeat="skill in enemy.skills">
 			<div ng-if="skillHoverOn(eIndex, $index) && validSkill(skill.name)" class="infoElement green whiteText enemySkillGemInfoPos" ng-style="{left: fetchESklDescHorzPos($index)}">
 				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
-			<div class="popOutText popOutBody">{{skill.desc}}</div>
+				<div class="popOutText popOutBody">{{skill.desc}}</div>
 			</div>
 		</div>
-		
+
 		<!--Weapon Description Boxes-->
 		<div ng-repeat="weapon in enemy.inventory">
 			<div class="infoElement green whiteText enemyInventoryInfoPos" ng-if="weaponHoverOn(eIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchEWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
-					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
-					{{weapon.class}}
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.class}}
 				</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div ng-if="notItem(weapon.type)">
@@ -166,7 +165,7 @@
 				<div class="popOutText italicText" ng-style="{top: setDescriptionLoc(weapon.type)}">{{weapon.note}}</div>
 			</div>
 		</div>
-		
+
 		<!--Stat Info Boxes (Modifiers)-->
 		<div ng-repeat="stat in statsList">
 			<div ng-if="statHoverOn(eIndex, stat[0])" class="infoElement green whiteText eStatInfoPos" ng-style="{top: stat[3]}">
@@ -178,12 +177,12 @@
 				</div>
 			</div>
 		</div>
-		
+
 	</div>
-	
+
 	<!-- Character Info Box -->
 	<div id="{{cIndex}}_box" ng-repeat="(cIndex,char) in charaData" class="characterInfo floatAbove" draggable="true" ng-show="checkCharToggle(cIndex)">
-	<!--Drag bar-->
+		<!--Drag bar-->
 		<div class="absolutePos dragBar olive"></div>
 		<!--Close button-->
 		<div class="infoElement dragBarButton hoverImage" title="Close" style="left:calc(100% - 18px)" ng-click="removeData(cIndex)">
@@ -221,7 +220,7 @@
 			<span class="currHPText">{{char.currHp}}</span>
 			<span class="totalHPText"> / {{char.maxHp}}</span>
 		</div>
-		
+
 		<!--Attack-->
 		<div class="infoElement darkTan tanText atkHitPos" style="top:150px">
 			<span class="indentedStatLabel">Atk</span>
@@ -246,13 +245,13 @@
 			<span class="largeIndentedStat" ng-if="checkRate(char.avo)">{{char.avo}}</span>
 			<span class="largeIndentedStat" ng-if="!checkRate(char.avo)">-</span>
 		</div>
-		
+
 		<!--Character Stats (Str/Mag/Skl/Etc)-->
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statsPos hoverBrown" ng-mouseover="statHoverIn(cIndex, stat[0])" ng-mouseleave="statHoverOut(cIndex, stat[0])" ng-style="{top: fetchStatVerticalPos($index)}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
 			<span class="indentedStat" ng-style="{color: determineStatColor(cIndex, $index, stat[0], 0)}">{{char[stat[0]]}}</span>
 		</div>
-		
+
 		<!--Inventory-->
 		<div ng-repeat="weapon in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchWeaponVerticalPos($index)}">
 			<span class="indentedWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{getWeaponClassIcon(weapon.class)}}"/></span>
@@ -265,7 +264,7 @@
 				<img ng-if="weaponEffective(weapon.effect,'monster')" src="IMG/eff_monster.png">
 			</div>
 		</div>
-		
+
 		<!--Weapon ranks-->
 		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index)}">
 			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
@@ -275,25 +274,25 @@
 				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
 			</span>
 		</div>
-		
+
 		<!--Pair Up Icon-->
 		<div class="infoElement hoverImage pairUpIcoPos" ng-mouseover="pairUpHoverIn(cIndex)" ng-mouseleave="pairUpHoverOut(cIndex)">
 			<img ng-src="IMG/pairup.png">
 		</div>
-		
+
 		<!--Shields-->
 		<div class="infoElement shieldsPos" title="Dual Guard Shields">
 			<div ng-repeat="val in [2,4,6,8,10]" style="display: block; float: left">
 				<img ng-src="{{checkShields(val, char.shields)}}">
 			</div>
 		</div>
-		
+
 		<!--Skill Gems-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
 		<div ng-repeat="skill in char.skills" class="infoElement hoverImage skillGemPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
 			<img ng-src="{{fetchSkillImage(skill.name, char.level, $index)}}">
 		</div>
-		
+
 		<!--Stat Info Boxes (Modifiers)-->
 		<div ng-repeat="stat in statsList">
 			<div ng-if="statHoverOn(cIndex, stat[0])" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[2]}">
@@ -306,14 +305,13 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<!--Weapon Description Boxes-->
 		<div ng-repeat="weapon in char.inventory">
 			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
-					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span>
-					{{weapon.class}}
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.class}}
 				</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div ng-if="notItem(weapon.type)">
@@ -328,21 +326,20 @@
 				<div class="popOutText italicText" ng-style="{top: setDescriptionLoc(weapon.type)}">{{weapon.note}}</div>
 			</div>
 		</div>
-		
+
 		<!--Skill Gem Info Boxes-->
 		<div ng-repeat="skill in char.skills">
 			<div ng-if="skillHoverOn(cIndex, $index)" class="infoElement green whiteText skillGemInfoPos" ng-style="{top: fetchSklDescVerticalPos($index)}">
 				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
-			<div class="popOutText popOutBody">{{skill.desc}}</div>
+				<div class="popOutText popOutBody">{{skill.desc}}</div>
 			</div>
 		</div>
-		
+
 		<!--Pair Up Stats Info-->
 		<div ng-if="pairUpHoverOn(cIndex)" class="infoElement green whiteText pairUpInfoPos">
 			<div class="popOutText popOutHeader boldText">Pair Up Bonuses</div>
 			<div class="popOutText popOutBody">
-				<span ng-repeat="stat in statsList">{{stat[0]}}: +{{char["pBonus"+stat[0]]}}<br/></span>
-				Mov: +{{char.pBonusMov}}
+				<span ng-repeat="stat in statsList">{{stat[0]}}: +{{char["pBonus"+stat[0]]}}<br/></span> Mov: +{{char.pBonusMov}}
 			</div>
 		</div>
 	</div>
