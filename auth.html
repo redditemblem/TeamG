@@ -1,4 +1,5 @@
 <div class="authBackground">
+	<div style="position: absolute; right: 3px; top: 3px; color: white; font-size: 12px;">Web app courtesy of IronPegasus and Leo</div>
 	<div class="authBox authBoxBlurred"></div>
 	<div id="authorize-div" class="authBox">
 		<div class="authText">
@@ -7,6 +8,11 @@
 		<button class="authButton" ng-show="!ready"><img src="IMG/loading.gif"></button>
 		<button class="authButton" ng-click="loadAPI(event)" ng-show="ready">LOAD MAP</button>
 	</div>
+	<div id="unavailable-div" class="authBox">
+		<div class="displayUnavailable">
+			Sorry, the map is currently down for maintenance. Please check back later!
+		</div>
+	</div>
 	<div id="loading-div" class="authBox">
 		<div class="displayLoading">
 			<img ng-src="{{loadingIcon}}"><br>
@@ -14,8 +20,8 @@
 			<progress id="progress" max="100"></progress>
 		</div>
 	</div>
-	<!--<button class="surveyButton" ng-mouseenter="survey=true" ng-mouseleave="survey=false" ng-click="openSurvey()">!</button>
-	<div class="surveyFlag stretchLeft" ng-show="survey">
-		<div style="margin-top:12px">Fill out the feedback survey</div>
-	</div> -->
+
+	<!--Preloaded map image-->
+	<img id="mapImg" ng-src="{{map}}" style="display: none;"/>
+
 </div>

@@ -1,8 +1,10 @@
 app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', function ($scope, $location, $interval, DataService) {
-	const rowNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "@", "#", "$", "%", "&", "=", "+", "~", ";", ">"];
-	var onLoad = checkData();
-	$scope.rows = ["A"];
-    $scope.columns = ["1"];
+	$scope.rows = ["1"];
+	$scope.columns = ["1"];
+	const boxWidth = 31;
+	const gridWidth = 1;
+	var refreshListener;
+
 	$scope.statsList = [
 	                ["Str", "Strength. Affects damage the unit deals with physical attacks.", "5px", "5px"],
 	                ["Mag", "Magic. Affects damage the unit deals with magical attacks.", "29px", "14px"],
@@ -14,12 +16,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 	               ];
 	
 	//Interval timers
-    var rowTimer = $interval(calcNumRows, 250, 20); //attempt to get rows 20 times at 250 ms intervals (total run: 5 sec)
-    var colTimer = $interval(calcNumColumns, 250, 20);
     var dragNDrop = $interval(initializeListeners, 250, 20);
     
     //Positioning constants
-    const statVerticalPos = ["10px", "39px", "68px", "97px", "126px", "155px", "184px"];
+	const statVerticalPos = ["10px", "39px", "68px", "97px", "126px", "155px", "184px"];
     const weaponVerticalPos = ["10px", "45px", "80px", "115px", "150px"];
     const weaponRankHorzPos = ["345px", "395px", "445px"];
     const weaponDescVerticalPos = ["10px", "35px", "60px", "85px", "105px"];
@@ -34,78 +34,36 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     const eWpnDescVerticalPos = ["5px", "20px", "40px", "55px", "65px"];
     
     //Constants
-    const STAT_DEFAULT_COLOR = "#E5C68D";
-    const STAT_BUFF_COLOR = "#42adf4";
-    const STAT_DEBUFF_COLOR = "#960000";
+	const STAT_DEFAULT_COLOR = "#E5C68D";
+	const STAT_BUFF_COLOR = "#42adf4";
+	const STAT_DEBUFF_COLOR = "#960000";
     
     //Reroutes the user if they haven't logged into the app
     //Loads data from the DataService if they have
-    function checkData(){
-    	if(DataService.getCharacters() == null)
-    		$location.path('/');
-    	else{
-    		$scope.charaData = DataService.getCharacters();
-    		$scope.enemyData = DataService.getEnemies();
-    	}
-    };
-    
-    //*************************\\
-    // FUNCTIONS FOR MAP TILE  \\
-    // GLOW BOXES              \\
-    //*************************\\
-    
-    /* Using the height of the map image, calculates the number of tiles tall
-     * the map is and returns a subsection of the rowNames array of that size.
-     * Called every 250 ms for the first 5 seconds the app is open.
-     */
-    function calcNumRows(){
-    	var map = document.getElementById('map');
-    	if(map != null){
-    		var height = map.naturalHeight; //calculate the height of the map
-        	
-        	height -= 36;
-        	height = height / 34;
-        	var temp = rowNames.slice(0, height+1);
-        	
-        	if(temp.length != 0){
-        		$interval.cancel(rowTimer); //cancel $interval timer
-        		$scope.rows = temp;
-        	}
-    	}
-    };
-    
-   /* Using the width of the map image, calculates the number of tiles wide
-    * the map is and returns an array of that size.
-    * Called every 250 ms for the first 5 seconds the app is open.
-    */
-   function calcNumColumns(){
-    	var map = document.getElementById('map');
-    	if(map != null){
-    		var width = map.naturalWidth; //calculate the height of the map
-        	
-        	width -= 36;
-        	width = width / 34;
-        	var temp = [];
-        	
-        	for(var i = 0; i < width; i++)
-        		temp.push(i+1);
-        	
-        	if(temp.length != 0){
-        		$interval.cancel(colTimer); //cancel $interval timer
-        		$scope.columns = temp;
-        	}
-    	}
-    };
+	if(DataService.getCharacters() == null)
+		$location.path('/');
+	else{
+		$scope.charaData = DataService.getCharacters();
+		$scope.mapUrl = DataService.getMap();
+		$scope.rows = DataService.getRows();
+		$scope.columns = DataService.getColumns();
+		$scope.terrainTypes = DataService.getTerrainTypes();
+		$scope.terrainLocs = DataService.getTerrainMappings();
+	}
+
+	$scope.redirectToHomePage = function() {
+		$location.path('/');
+  	};
     
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index){
-    	return (((index+1)*34)+2) + "px";
+    	return (index * (boxWidth + gridWidth)) + "px";
     };
     
     //Returns the horizontal position of a glowBox element
     $scope.determineGlowX = function(index){
-    	return (index*34) + "px";
-    };
+    	return (index * (boxWidth + gridWidth)) + "px";
+	};
     
     //*************************\\
     // FUNCTIONS FOR MAP       \\
@@ -206,44 +164,28 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     
     //Using a character's coordinates, calculates their horizontal
     //position on the map
-    $scope.determineCharX = function(pos){
-    	pos = pos.substring(1,pos.length); //grab last 1-2 chars
+    $scope.determineCharX = function(index, pos){
+		if(index == 0) numDefeat = 0; 
+		if(pos == "Defeated" || pos == "Not Deployed")
+			return (((numDefeat % 30) * 16) + 16) + "px";
+
+    	pos = pos.substring(0,pos.indexOf(",")); //grab first number
     	pos = parseInt(pos);
-    	return ((pos*34)+2) + "px";
+    	return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
     };
     
-    //Using a character's coordinates, calculates their vertical
-    //position on the map
-    $scope.determineCharY = function(pos){
-    	pos = pos.substring(0,1); //grab first char
-    	pos = parseInt(getPosLetterEquivalent(pos));
-    	return ((pos*34)+2) + "px";
-    };
-    
-    $scope.determineCharZIndex = function(pos){
-    	pos = pos.substring(0,1); //grab first char
-    	return getPosLetterEquivalent(pos);
-    };
-    
-    function getPosLetterEquivalent(letter){
-    	if(letter.match(/[A-Z]/i)) //If pos is a letter
-    		return letter.charCodeAt(0) - 64;
-    	
-    	switch(letter){
-    		case '@': letter = 27; break;
-    		case '#': letter = 28; break;
-    		case '$': letter = 29; break;
-    		case '%': letter = 30; break;
-    		case '&': letter = 31; break;
-    		case '=': letter = 32; break;
-    		case '+': letter = 33; break;
-    		case '~': letter = 34; break;
-    		case ';': letter = 35; break;
-    		case '>': letter = 36; break;
-    		default: letter = 0; break;
-    	}
-    	
-    	return letter;
+	//Using a character's coordinates, calculates their vertical
+	//position on the map
+	$scope.determineCharY = function(pos){
+		if(pos == "Defeated" || pos == "Not Deployed"){
+			numDefeat +=1;
+			return (Math.floor((numDefeat-1)/30) + ($scope.rows.length*(gridWidth+boxWidth)) + 16) +"px";
+		}
+
+		pos = pos.substring(pos.indexOf(",")+1, pos.indexOf("(") != -1 ? pos.indexOf("(") : pos.length); //grab first char
+		pos = pos.trim();
+    	pos = parseInt(pos);
+    	return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
     };
     
     //***********************\\
