@@ -5,36 +5,22 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     const gridWidth = 1;
     var progress = 0;
 
-    var characters = null;
+	var characters = null;
+	var enemies = null;
     var rows = [];
     var cols = [];
-    var map, characterData, coordMapping, terrainIndex, terrainLocs;
+    var map, characterData, enemyData, itemIndex, skillIndex, coordMapping, terrainIndex, terrainLocs;
 
-    this.getCharacters = function() {
-        return characters;
-    };
-    this.getMap = function() {
-        return map;
-    };
-    this.getRows = function() {
-        return rows;
-    };
-    this.getColumns = function() {
-        return cols;
-    };
-    this.getTerrainTypes = function() {
-        return terrainIndex;
-    };
-    this.getTerrainMappings = function() {
-        return terrainLocs;
-    };
+    this.getCharacters = function() { return characters; };
+	this.getEnemies = function() { return enemies; };
+    this.getMap = function() { return map; };
+    this.getRows = function() { return rows; };
+    this.getColumns = function(){ return cols; };
+    this.getTerrainTypes = function() { return terrainIndex; };
+    this.getTerrainMappings = function() { return terrainLocs; };
 
-    this.loadMapData = function() {
-        fetchCharacterData();
-    };
-    this.calculateRanges = function() {
-        getMapDimensions();
-    };
+    this.loadMapData = function() { fetchCharacterData(); };
+    this.calculateRanges = function() { getMapDimensions(); };
 
     //\\//\\//\\//\\//\\//
     // DATA AJAX CALLS  //
@@ -44,27 +30,149 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "COLUMNS",
-            range: 'Character Tracker!B:ZZ',
+            range: 'Stats!B2:AZ',
         }).then(function(response) {
             characterData = response.result.values;
             updateProgressBar();
-            //fetchCharacterImages();
+            fetchCharacterImages();
         });
     };
 
-    // WIP: Fetches sprites from Team G Google Sheets
     function fetchCharacterImages() {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "COLUMNS",
             valueRenderOption: "FORMULA",
             // Obtain all images from all columns at row 5
-            range: 'Character Tracker!B5:AZ5',
+            range: 'Stats!B5:AZ5',
         }).then(function(response) {
-            characterImages = response.result.values[0];
-            updateProgressBar();
+			var images = response.result.values[0];
+			
+			for(var i = 0; i < images.length && i < characterData.length; i++){
+				characterData[i].splice(4, 1, processImageURL(images[i])); //replace the element at index 4
+			}
+
+			updateProgressBar();
+			fetchEnemyData();
         });
-    }
+	}
+	
+	function fetchEnemyData() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "COLUMNS",
+            range: 'Enemy Stats!B1:BZ',
+        }).then(function(response) {
+            enemyData = response.result.values;
+            updateProgressBar();
+            fetchEnemyImages();
+        });
+    };
+
+    function fetchEnemyImages() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "COLUMNS",
+            valueRenderOption: "FORMULA",
+            // Obtain all images from all columns at row 5
+            range: 'Enemy Stats!B5:AZ5',
+        }).then(function(response) {
+			var images = response.result.values[0];
+			
+			for(var i = 0; i < images.length && i < enemyData.length; i++){
+				enemyData[i].splice(3, 1, processImageURL(images[i])); //replace the element at index 3
+			}
+
+			updateProgressBar();
+			fetchItemIndex();
+        });
+	}
+	
+	function fetchItemIndex() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "ROWS",
+            range: 'Item List!B2:AO',
+        }).then(function(response) {
+			var results = response.result.values;
+			
+			itemIndex = {};
+			for(var i = 0; i < results.length; i++){
+				var itm = results[i];
+				if(itm[0].length > 0){ //if the item has a name
+					itemIndex[itm[0]] = {
+						'name' : itm[0],
+						'type' : itm[1],
+						'atkStat' : itm[2],
+						'rank' : itm[3],
+						'might' : parseInt(itm[4]) | 0,
+						'hit' : parseInt(item[5]) | 0,
+						'crit' : parseInt(itm[6]) | 0,
+						'crit%' : parseFloat(itm[7]) | 0.0,
+						'critDmg' : parseInt(itm[8]) | 0,
+						'avo' : parseInt(itm[9]) | 0,
+						'cEva' : parseInt(itm[10]) | 0,
+						'range' : itm[11],
+						'effect' : itm[12],
+						'effective' : itm[13],
+						'StrEqpt' : parseInt(itm[14]) | 0,
+						'MagEqpt' : parseInt(itm[15]) | 0,
+						'SklEqpt' : parseInt(itm[16]) | 0,
+						'SpdEqpt' : parseInt(itm[17]) | 0,
+						'LckEqpt' : parseInt(itm[18]) | 0,
+						'DefEqpt' : parseInt(itm[19]) | 0,
+						'MagEqpt' : parseInt(itm[20]) | 0,
+						'StrInv' : parseInt(itm[28]) | 0,
+						'MagInv' : parseInt(itm[29]) | 0,
+						'SklInv' : parseInt(itm[30]) | 0,
+						'SpdInv' : parseInt(itm[31]) | 0,
+						'LckInv' : parseInt(itm[32]) | 0,
+						'DefInv' : parseInt(itm[33]) | 0,
+						'MagInv' : parseInt(itm[34]) | 0,
+						'desc' : itm[35] != undefined ? itm[35] : "",
+						'spriteUrl' : itm[36] != undefined ? itm[36] : "",
+					}
+				}
+			}
+
+            updateProgressBar();
+            fetchSkillIndex();
+        });
+	};
+	
+	function fetchSkillIndex() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "ROWS",
+            range: 'Skill List!B2:C',
+        }).then(function(response) {
+			var skills = response.result.values;
+			
+			gapi.client.sheets.spreadsheets.values.get({
+				spreadsheetId: sheetId,
+				majorDimension : "COLUMNS",
+				valueRenderOption: "FORMULA",
+				range: 'Skill List!A2:A',
+			}).then(function(response){
+				var images = response.results.values[0];
+
+				skillIndex = {};
+				for(var i = 0; i < skills.length; i++){
+					var s = skills[i];
+					if(s[0].length > 0){ //if the item has a name
+						skillIndex[s[0]] = {
+							'name' : s[0],
+							'desc' : s[1],
+							'spriteUrl' : images[i] != undefined ? processImageURL(images[i]) : ""
+						}
+					}
+				}
+
+				updateProgressBar();
+				processCharacters();
+			});
+        });
+    };
 
     /*function fetchTerrainIndex(){
     	gapi.client.sheets.spreadsheets.values.get({
@@ -109,94 +217,82 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     };*/
 
     function processCharacters() {
-        var characters = {};
+        characters = {};
 
         for (var i = 0; i < characterData.length; i++) {
             var c = characterData[i];
+			if(c[0].length == 0) continue;
 
             var currObj = {
                 'name': c[0],
-                'class': c[1],
-                'spriteUrl': processImgUrl(""),
-                'level': c[2],
-                'exp': c[3],
-                'position': "0,0",
-                'currHp': c[7],
-                'maxHp': c[8],
-                'Str': c[9],
-                'Mag': c[10],
-                'Skl': c[11],
-                'Spd': c[12],
-                'Lck': c[13],
-                'Def': c[14],
-                'Res': c[15],
-                'mov': c[16],
-                'shields': c[17],
-                'hpBuff': c[18],
-                'StrBuff': c[19],
-                'MagBuff': c[20],
-                'SklBuff': c[21],
-                'SpdBuff': c[22],
-                'LckBuff': c[23],
-                'DefBuff': c[24],
-                'ResBuff': c[25],
-                'movBuff': c[26],
+				'class': c[1],
+				'unitType' : c[2],
+                'spriteUrl': c[3],
+                'level': c[4],
+				'exp': c[5],
+				'gold' : parseInt(c[6].substring(0, c[6].index("|")).trim()) | 0,
+				'ore' : parseInt(c[6].substring(c[6].index("|")+1).trim()) | 0,
+				'position': c[7],
+                'currHp': parseInt(c[9]) | 0,
+                'maxHp': parseInt(c[10]) | 0,
+                'StrPair': parseInt(c[11]) | 0,
+                'MagPair': parseInt(c[12]) | 0,
+                'SklPair': parseInt(c[13]) | 0,
+                'SpdPair': parseInt(c[14]) | 0,
+                'LckPair': parseInt(c[15]) | 0,
+                'DefPair': parseInt(c[16]) | 0,
+                'ResPair': parseInt(c[17]) | 0,
+				'MovPair': parseInt(c[18]) | 0,
+				'StrBase' : parseInt(c[20]) | 0,
+				'MagBase' : parseInt(c[21]) | 0,
+				'SklBase' : parseInt(c[22]) | 0,
+				'SpdBase' : parseInt(c[23]) | 0,
+				'LckBase' : parseInt(c[24]) | 0,
+				'DefBase' : parseInt(c[25]) | 0,
+				'MagBase' : parseInt(c[26]) | 0,
+				'MovBase' : parseInt(c[27]) | 0,
+				'weaknesses' : c[28].length > 0 && c[28] != "-" ? c[28].split(",") : [],
+				'atk' : parseInt(c[29]) | 0,
+				'hit' : parseInt(c[30]) | 0,
+				'crit' : parseInt(c[31]) | 0,
+				'avo' : parseInt(c[32]) | 0,
+				'cEva' : parseInt(c[33]) | 0,
+				'inventory' : {},
+				'partner' : c[42],
+				'stance' : c[43],
+				'shields': c[44],
+				'skills' : {},
+                'hpBuff': parseInt(c[54]) | 0,
+                'StrBuff': parseInt(c[55]) | 0,
+                'MagBuff': parseInt(c[56]) | 0,
+                'SklBuff': parseInt(c[57]) | 0,
+                'SpdBuff': parseInt(c[58]) | 0,
+                'LckBuff': parseInt(c[59]) | 0,
+                'DefBuff': parseInt(c[60]) | 0,
+                'ResBuff': parseInt(c[61]) | 0,
+				'MovBuff': parseInt(c[62]) | 0,
+				'atkBuff' : parseInt(c[63]) | 0,
+				'hitBuff' : parseInt(c[64]) | 0,
+				'critBuff' : parseInt(c[65]) | 0,
+				'avoBuff' : parseInt(c[66]) | 0,
+				'cEvaBuff' : parseInt(c[67]) | 0,
                 'weaponRanks': {
                     'w1': {
-                        'class': c[28],
-                        'rank': c[29],
-                        'exp': c[4]
+                        'class': c[83],
+                        'rank': c[84],
+                        'exp': calcExpPercent(c[85])
                     },
                     'w2': {
-                        'class': c[30],
-                        'rank': c[31],
-                        'exp': c[5]
+                        'class': c[86],
+                        'rank': c[87],
+                        'exp': calcExpPercent(c[88])
                     },
                     'w3': {
-                        'class': c[32],
-                        'rank': c[33],
-                        'exp': c[6]
+                        'class': c[89],
+                        'rank': c[90],
+                        'exp': calcExpPercent(c[91])
                     }
                 },
-                'equippedWeapon': c[37],
-                'wStrBuff': c[45],
-                'wMagBuff': c[46],
-                'wSklBuff': c[47],
-                'wSpdBuff': c[48],
-                'wLckBuff': c[49],
-                'wDefBuff': c[50],
-                'wResBuff': c[51],
-                'atk': c[52],
-                'hit': c[53],
-                'crit': c[54],
-                'avo': c[55],
-                'pairUpPartner': c[57],
-                'pStrBuff': c[60],
-                'pMagBuff': c[61],
-                'pSklBuff': c[62],
-                'pSpdBuff': c[63],
-                'pLckBuff': c[64],
-                'pDefBuff': c[65],
-                'pResBuff': c[66],
-                'pMovBuff': c[67],
-                'pBonusStr': c[71],
-                'pBonusMag': c[72],
-                'pBonusSkl': c[73],
-                'pBonusSpd': c[74],
-                'pBonusLck': c[75],
-                'pBonusDef': c[76],
-                'pBonusRes': c[77],
-                'pBonusMov': c[78],
-                'baseHp': c[91],
-                'baseStr': c[92],
-                'baseMag': c[93],
-                'baseSkl': c[94],
-                'baseSpd': c[95],
-                'baseLck': c[96],
-                'baseDef': c[97],
-                'baseRes': c[98],
-                'skills': {},
-                'inventory': {}
             };
 
             //Find and append weapons
@@ -221,7 +317,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             range: 'Current Map!A6:A6',
         }).then(function(response) {
             var formula = response.result.values[0][0];
-            map = formula.substring(formula.indexOf("\"") + 1, formula.lastIndexOf("\""));
+            map = processImageURL(formula);
 
             updateProgressBar();
         });
@@ -413,8 +509,20 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     };
 
     function processImageURL(str) {
-        return str.substring(str.indexOf("\"") + 1, str.lastIndexOf("\""));
-    };
+		if(str == undefined || str.length == 0) return "";
+        else return str.substring(str.indexOf("\"") + 1, str.lastIndexOf("\""));
+	};
+	
+	function calcExpPercent(exp){
+		if(exp.length < 3) return 0;
+
+		var split = exp.split("/");
+		var curr = parseInt(split[0].trim()) | 0;
+		var nextRank = parseInt(split[1].trim()) | 0;
+
+		if(curr == 0 || nextRank == 0) return 0;
+		else return curr/nextRank;
+	};
 
     function getItem(name) {
         var originalName = name;
