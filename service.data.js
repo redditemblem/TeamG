@@ -1,6 +1,7 @@
 app.service('DataService', ['$rootScope', function($rootScope) {
+    const rowNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", "WW", "XX", "YY", "ZZ"];
     const sheetId = '1Y9xK4Dr02jSW_b_7pT6Cc25_qSwS2I6eeafECd2lu7k';
-    const updateVal = (100 / 1) + 0.1;
+    const updateVal = (100 / 13) + 0.1;
     const boxWidth = 31;
     const gridWidth = 1;
     var progress = 0;
@@ -59,7 +60,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     function fetchCharacterImages() {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
-            majorDimension: "COLUMNS",
+            majorDimension: "ROWS",
             valueRenderOption: "FORMULA",
             // Obtain all images from all columns at row 5
             range: 'Stats!B5:AZ5',
@@ -67,7 +68,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             var images = response.result.values[0];
 
             for (var i = 0; i < images.length && i < characterData.length; i++) {
-                characterData[i].splice(4, 1, processImageURL(images[i])); //replace the element at index 4
+                characterData[i].splice(3, 1, processImageURL(images[i])); //replace the element at index 4
             }
 
             updateProgressBar();
@@ -90,10 +91,9 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     function fetchEnemyImages() {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
-            majorDimension: "COLUMNS",
+            majorDimension: "ROWS",
             valueRenderOption: "FORMULA",
-            // Obtain all images from all columns at row 5
-            range: 'Enemy Stats!B5:AZ5',
+            range: 'Enemy Stats!B4:AZ4',
         }).then(function(response) {
             var images = response.result.values[0];
 
@@ -117,6 +117,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             itemIndex = {};
             for (var i = 0; i < results.length; i++) {
                 var itm = results[i];
+                if(itm.length == 0) continue;
+
                 if (itm[0].length > 0) { //if the item has a name
                     itemIndex[itm[0]] = {
                         'name': itm[0],
@@ -124,7 +126,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                         'atkStat': itm[2],
                         'rank': itm[3],
                         'might': parseInt(itm[4]) | 0,
-                        'hit': parseInt(item[5]) | 0,
+                        'hit': parseInt(itm[5]) | 0,
                         'crit': parseInt(itm[6]) | 0,
                         'crit%': parseFloat(itm[7]) | 0.0,
                         'critDmg': parseInt(itm[8]) | 0,
@@ -172,11 +174,13 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 valueRenderOption: "FORMULA",
                 range: 'Skill List!A2:A',
             }).then(function(response) {
-                var images = response.results.values[0];
+                var images = response.result.values[0];
 
                 skillIndex = {};
                 for (var i = 0; i < skills.length; i++) {
                     var s = skills[i];
+                    if(s.length == 0) continue;
+
                     if (s[0].length > 0) { //if the item has a name
                         skillIndex[s[0]] = {
                             'name': s[0],
@@ -187,32 +191,35 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 }
 
                 updateProgressBar();
-                processCharacters();
+                fetchTerrainIndex();
             });
         });
     };
 
-    /*function fetchTerrainIndex(){
+    function fetchTerrainIndex(){
     	gapi.client.sheets.spreadsheets.values.get({
     		spreadsheetId: sheetId,
     		majorDimension: "ROWS",
-    		range: 'Terrain Chart!A2:K',
+    		range: 'Terrain List!A2:K',
     	}).then(function(response) {
     		var rows = response.result.values;
     		terrainIndex = {};
 
     		for(var i = 0; i < rows.length; i++){
-    			var r = rows[i];
+                var r = rows[i];
+                if(r.length == 0 || r[0].length == 0) continue;
+
     			terrainIndex[r[0]] = {
-    				'avo' : r[1] != "-" ? parseInt(r[1]) : 0,
-    				'def' : r[2] != "-" ? parseInt(r[2]) : 0,
-    				'heal' : r[3] != "-" ? parseInt(r[3].match(/^[0-9]+/)) : 0,
+    				'avo' : parseInt(r[1]) | 0,
+    				'def' : parseInt(r[2]) | 0,
+    				'heal' : r[3],
     				'Foot' :  r[4],
-    				'Armor' : r[5],
+    				'Beast' : r[5],
     				'Mage' : r[6],
-    				'Mounted' : r[7],
-    				'Flier' : r[8],
-    				'effect' : r[9]
+    				'Mount (T1)' : r[7],
+                    'Mount (T2)' : r[8],
+                    'Flier' : r[9],
+    				'note' : r[10]
     			}
     		}
 
@@ -225,14 +232,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
     		spreadsheetId: sheetId,
     		majorDimension: "ROWS",
-    		range: 'Terrain Map!A:ZZ',
+    		range: 'Terrain Coordinates!A1:ZZ',
         }).then(function(response) {
     		coordMapping = response.result.values;
 
     		updateProgressBar();
     		processCharacters();
     	});
-    };*/
+    };
 
     function processCharacters() {
         characters = {};
@@ -248,8 +255,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'spriteUrl': c[3],
                 'level': c[4],
                 'exp': c[5],
-                'gold': parseInt(c[6].substring(0, c[6].index("|")).trim()) | 0,
-                'ore': parseInt(c[6].substring(c[6].index("|") + 1).trim()) | 0,
+                'gold': parseInt(c[6].substring(0, c[6].indexOf("|")).trim()) | 0,
+                'ore': parseInt(c[6].substring(c[6].indexOf("|")+1).trim()) | 0,
                 'position': c[7],
                 'currHp': parseInt(c[9]) | 0,
                 'maxHp': parseInt(c[10]) | 0,
@@ -314,20 +321,26 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             };
 
             //Find and append weapons
+            var itemArray = c.slice(36, 41);
+            var eqptIndex = itemArray.indexOf(c[35]);
+            if(eqptIndex != -1){ //if there is an equipped item, move it to the head of the list
+                itemArray.splice(eqptIndex, 1);
+                itemArray.splice(0, 0, c[35]);
+            }
 
-            currObj.skills.skl0 = findSkill(skls[skls.length - 1], personalSkillsDesc);
+            for(var j = 0; j < itemArray.length; j++)
+                currObj.inventory["itm" + j] = getItem(itemArray[j]);
 
-            for (var j = 0; j < skls.length - 1; j++)
-                currObj.skills["skl" + (j + 1)] = findSkill(skls[j], skillDescriptions);
+            for(var k = 47; k <= 52; k++)
+                currObj.skills["skl" + (k-46)] = getSkill(c[k]);
 
-            charaObjs["char_" + i] = currObj;
+            characters["char_" + i] = currObj;
         }
 
         updateProgressBar();
-        fetchMapUrl();
+        processEnemies();
     };
 
-    // WIP
     function processEnemies() {
         enemies = {};
 
@@ -377,8 +390,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                         'rank': e[87],
                     },
                     'w3': {
-                        'class': c[89],
-                        'rank': c[90],
+                        'class': e[89],
+                        'rank': e[90],
                     }
                 },
                 'skills': {},
@@ -402,13 +415,20 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             };
 
             //Find and append weapons
+            var itemArray = e.slice(34, 39);
+            var eqptIndex = itemArray.indexOf(e[33]);
+            if(eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
+                itemArray.splice(eqptIndex, 1);
+                itemArray.splice(0, 0, e[33]);
+            }
 
-            currObj.skills.skl0 = findSkill(skls[skls.length - 1], personalSkillsDesc);
+            for(var j = 0; j < itemArray.length; j++)
+                currObj.inventory["itm" + j] = getItem(itemArray[j]);
 
-            for (var j = 0; j < skls.length - 1; j++)
-                currObj.skills["skl" + (j + 1)] = findSkill(skls[j], skillDescriptions);
+            for(var k = 46; k < 51; k++)
+                currObj.skills["skl" + (k-45)] = getSkill(e[k]);
 
-            charaObjs["char_" + i] = currObj;
+            enemies["enmy_" + i] = currObj;
         }
 
         updateProgressBar();
@@ -437,12 +457,11 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         var map = document.getElementById('mapImg');
         var height = map.naturalHeight; //calculate the height of the map
 
-        height = height / (boxWidth + gridWidth);
-        for (var i = 0; i < height; i++)
-            rows.push(i + 1);
+        height = (height / (boxWidth + gridWidth)) - 2;
+        rows = rowNames.slice(0, height);
 
         var width = map.naturalWidth; //calculate the width of the map
-        width = width / (boxWidth + gridWidth);
+        width = (width / (boxWidth + gridWidth)) - 2;
 
         for (var i = 0; i < width; i++)
             cols.push(i + 1);
@@ -456,19 +475,23 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
         for (var r = 0; r < rows.length; r++)
             for (var c = 0; c < cols.length; c++)
-                terrainLocs[cols[c] + "," + rows[r]] = getDefaultTerrainObj();
+                terrainLocs[rows[r]+cols[c]] = getDefaultTerrainObj();
 
         //Update terrain types from input list
         for (var r = 0; r < coordMapping.length; r++) {
             var row = coordMapping[r];
             for (var c = 0; c < cols.length && c < row.length; c++) {
-                if (row[c].length > 0) terrainLocs[cols[c] + "," + rows[r]].type = row[c];
+                if (row[c].length > 0) terrainLocs[rows[r]+cols[c]].type = row[c];
             }
         }
 
         for (var c in characters)
             if (terrainLocs[characters[c].position] != undefined)
-                terrainLocs[characters[c].position].occupiedAffiliation = c.indexOf("char_") > -1 ? "char" : characters[c].affiliation;
+                terrainLocs[characters[c].position].occupiedAffiliation = "char";
+
+        for (var e in enemies)
+            if (terrainLocs[enemies[e].position] != undefined)
+                terrainLocs[enemies[e].position].occupiedAffiliation = "enemy";
 
         updateProgressBar();
         //calculateCharacterRanges();
@@ -641,27 +664,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || itemIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'class': "",
-                'rank': "",
-                'type': "",
-                'might': "",
-                'hit': "",
-                'crit': "",
-                'net': "",
-                'range': "",
-                'effect': "Couldn't locate this item.",
-                'laguzEff': "",
-                'desc': "",
-                'HP': "",
-                'Str': "",
-                'Mag': "",
-                'Skl': "",
-                'OSpd': "",
-                'DSpd': "",
-                'Lck': "",
-                'Def': "",
-                'Res': "",
-                'icoOverride': ""
+                'type' : "Mystery",
+                'desc' : "This item could not be located."
             }
 
         var copy = Object.assign({}, itemIndex[name]);
@@ -673,9 +677,6 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || skillIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'slot': "",
-                'classes': "",
-                'finalEff': "",
                 'notes': "This skill could not be located."
             }
         else return skillIndex[name];
@@ -685,109 +686,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || classIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'tags': [],
                 'desc': ""
             }
-        else return JSON.parse(JSON.stringify(classIndex[name]));
-    };
-
-    function getStatusEffect(name) {
-        if (name == undefined || name.length == 0 || statusIndex[name] == undefined)
-            return {
-                'name': "No Status",
-                'turns': "",
-                'effect': "This unit's feeling pretty normal."
-            }
-        else return statusIndex[name];
-    };
-
-    //-------------------\\
-    // STAT CALCULATIONS \\
-    //-------------------\\
-
-    function calcRankLetter(exp) {
-        exp = parseInt(exp);
-
-        if (exp < 10) return "E";
-        else if (exp < 30) return "D";
-        else if (exp < 70) return "C";
-        else if (exp < 150) return "B";
-        else if (exp < 300) return "A";
-        else return "S";
-    };
-
-    function getEquippedWeaponRank(char) {
-        var eqWpnCls = char.equippedWeapon.class;
-
-        var wpnRank = "";
-        if (eqWpnCls == "Laguz") {
-            eqWpnCls = char.equippedWeapon.name.substring(0, char.equippedWeapon.name.indexOf("-")).trim();
-            wpnRank = char.equippedWeapon.name.substring(char.equippedWeapon.name.indexOf("-") + 1).trim();
-        } else {
-            if (eqWpnCls == char.weaponRanks.w1.class) wpnRank = char.weaponRanks.w1.rank;
-            else if (eqWpnCls == char.weaponRanks.w2.class) wpnRank = char.weaponRanks.w2.rank;
-            else if (eqWpnCls == char.weaponRanks.w3.class) wpnRank = char.weaponRanks.w3.rank;
-            else if (eqWpnCls == char.weaponRanks.w4.class) wpnRank = char.weaponRanks.w4.rank;
-        }
-
-        if (wpnRank.length > 0) return weaponRankBonuses[eqWpnCls][wpnRank];
-        else return {
-            'dmg': 0,
-            'hit': 0,
-            'crit': 0
-        };
-    };
-
-    function calcAttack(char) {
-        var eqWpn = char.equippedWeapon;
-
-        var playerMight;
-        if (eqWpn.type == "Physical") playerMight = char.TrueStr;
-        else if (eqWpn.type == "Magical") playerMight = char.TrueMag;
-        else playerMight = 0;
-
-        var wpnMight = parseInt(eqWpn.might) || 0;
-        var dmgBonus = getEquippedWeaponRank(char).dmg;
-
-        return Math.floor(playerMight + wpnMight + dmgBonus);
-    };
-
-    function calcHit(char) {
-        var wpnHit = parseInt(char.equippedWeapon.hit) || 0;
-        var hitBonus = getEquippedWeaponRank(char).hit;
-
-        return Math.floor((char.TrueSkl * 2.5) + (char.TrueLck * 1.5) + wpnHit + hitBonus);
-    };
-
-    function calcAvo(char) {
-        var wpnAvo = parseInt(char.equippedWeapon.avo) || 0;
-        return Math.floor((char.TrueSpd * 2.5) + (char.TrueLck * 1.5) + wpnAvo);
-    };
-
-    function calcCrit(char) {
-        var wpnCrit = parseInt(char.equippedWeapon.crit) || 0;
-        var critBonus = getEquippedWeaponRank(char).crit;
-        return Math.floor((char.TrueSkl * 2.5) + wpnCrit + critBonus);
-    };
-
-    function calcEva(char) {
-        var wpnEva = parseInt(char.equippedWeapon.eva) || 0;
-        return Math.floor((char.TrueLck * 2.5) + wpnEva);
-    };
-
-    function calcTrueStat(char, stat) {
-        var base = char[stat];
-        var buff = char[stat + "Buff"];
-        var boost = char[stat + "Boost"];
-
-        if (stat == "Spd") stat = "OSpd";
-        var wpn = char.equippedWeapon[stat];
-
-        base = parseInt(base);
-        buff = (buff.length > 0 ? parseInt(buff) : 0);
-        boost = (boost.length > 0 ? parseInt(boost) : 0);
-        wpn = (wpn != undefined ? parseInt(wpn) : 0);
-
-        return base + buff + boost + wpn;
+        else return classIndex[name];
     };
 }]);

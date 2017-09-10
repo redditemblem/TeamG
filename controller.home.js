@@ -57,12 +57,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index) {
-        return (index * (boxWidth + gridWidth)) + "px";
+        return ((index+1) * (boxWidth + gridWidth)) + "px";
     };
 
     //Returns the horizontal position of a glowBox element
     $scope.determineGlowX = function(index) {
-        return (index * (boxWidth + gridWidth)) + "px";
+        return ((index+1) * (boxWidth + gridWidth)) + "px";
     };
 
     //*************************\\
