@@ -167,28 +167,25 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     //Using a character's coordinates, calculates their horizontal
     //position on the map
-    $scope.determineCharX = function(index, pos) {
-        if (index == 0) numDefeat = 0;
-        if (pos == "Defeated" || pos == "Not Deployed")
-            return (((numDefeat % 30) * 16) + 16) + "px";
-
-        pos = pos.substring(0, pos.indexOf(",")); //grab first number
+    $scope.determineCharX = function(pos){
+        pos = pos.match(/[0-9]+/g)[0];
         pos = parseInt(pos);
-        return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
+        return (pos * (boxWidth + gridWidth)) + "px";
     };
 
     //Using a character's coordinates, calculates their vertical
     //position on the map
-    $scope.determineCharY = function(pos) {
-        if (pos == "Defeated" || pos == "Not Deployed") {
-            numDefeat += 1;
-            return (Math.floor((numDefeat - 1) / 30) + ($scope.rows.length * (gridWidth + boxWidth)) + 16) + "px";
-        }
-
-        pos = pos.substring(pos.indexOf(",") + 1, pos.indexOf("(") != -1 ? pos.indexOf("(") : pos.length); //grab first char
-        pos = pos.trim();
-        pos = parseInt(pos);
-        return ((pos - 1) * (boxWidth + (gridWidth * 2)) + 1) + "px";
+    $scope.determineCharY = function(pos){
+		pos = pos.match(/[a-zA-Z]+/g)[0];
+    	pos = parseInt(getPosLetterEquivalent(pos));
+    	return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
+    };
+    
+    function getPosLetterEquivalent(letter){
+    	if(letter.length == 1) 
+    		return letter.charCodeAt(0) - 64; //single letter
+    	else
+			return letter.charCodeAt(0) - 38; //double letter
     };
 
     //***********************\\
