@@ -89,8 +89,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return $scope[index + "_displayBox"] == true;
     };
 
-    $scope.isPaired = function(pairUpPartner) {
-        return pairUpPartner != "None";
+    $scope.isPaired = function(partner, stance) {
+        return partner.length > 0 && stance != "Attack";
     };
 
     //Returns the image URL for the unit in the back of a pairup
@@ -161,9 +161,13 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         else return "";
     };
 
-    $scope.validPosition = function(pos) {
-        return pos != "";
+    $scope.validPosition = function(pos, stance) {
+        return pos != "" && stance != "Backpack";
     };
+
+    $scope.textTooLong = function(textA, textB){
+		return (textA.length + textB.length) > 150;
+	};
 
     //Using a character's coordinates, calculates their horizontal
     //position on the map
@@ -373,8 +377,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return types.indexOf(goal) != -1;
     };
 
-    $scope.existsWeapon = function(weaponName) {
-        return weaponName != "" && weaponName != "N/A";
+    $scope.existsWeaponRank = function(cls, rank){
+        return cls != "-" && rank != "-";
     };
 
     //Returns the weapon rank icon relevant to the passed weapon type
@@ -413,9 +417,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
 
     $scope.setDescriptionLoc = function(type) {
-        if (type != "Item" && type != "Gold" && type != "Unknown") return "60px";
-        else return "25px";
+        if (type == "Item" || type == "Trophy" && type == "Mystery") return "25px";
+        else return "60px";
     };
+
+    $scope.setItemDescHeight = function(type){
+		if(type == "Item" || type == "Trophy" || type == "Mystery") return "118px";
+    	else return "80px";
+	};
 
     //***************************\\
     // MOUSEOVER/MOUSEOUT EVENTS \\

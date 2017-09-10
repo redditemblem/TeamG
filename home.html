@@ -13,47 +13,47 @@
 	<!--Draw characters-->
 	<div ng-repeat="(cIndex,char) in charaData">
 		<div id="{{cIndex}}"
-			 ng-if="validPosition(char.position)"
+			 ng-if="validPosition(char.position, char.stance)"
 			 ng-click="displayData(cIndex)" 
 			 class="absolutePos charDiv hoverImage" 
 			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
 			 ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}"
 		>
 			<!--Paired unit sprite-->
-			<div ng-if="isPaired(char.pairUpPartner)" class="charDiv mapCharOffsetLeft">
-				<img ng-src="{{getPairUnitIcon(char.pairUpPartner, 0)}}" class="mapCharCentered dimImage">
+			<div ng-if="isPaired(char.partner, char.stance)" class="charDiv mapCharOffsetLeft">
+				<img ng-src="{{getPairUnitIcon(char.partner, 0)}}" class="mapCharCentered dimImage">
 			</div>
 			<!--Unit sprite-->
-			<div class="charDiv" ng-class="isPaired(char.pairUpPartner) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
+			<div class="charDiv" ng-class="isPaired(char.partner, char.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
 				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
 			</div>
 			<div class="healthBarBack"></div>
 			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*28)+'px'}"></div>
 			<div class="healthBarBorder"></div>
-			<div ng-if="isPaired(char.pairUpPartner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+			<div ng-if="isPaired(char.partner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 		</div>
 	</div>
 
 	<!--Draw enemies-->
 	<div ng-repeat="(eIndex,enemy) in enemyData">
 		<div id="{{eIndex}}"
-			 ng-if="validPosition(enemy.position)"
+			 ng-if="validPosition(enemy.position, enemy.stance)"
 			 ng-click="displayData(eIndex)" 
 			 class="absolutePos charDiv hoverImage" 
 			 title="({{enemy.position}}) {{terrainLocs[enemy.position].type}}: {{terrainTypes[terrainLocs[enemy.position].type].avo}}🚶  {{terrainTypes[terrainLocs[enemy.position].type].def}}⛨ {{terrainTypes[terrainLocs[enemy.position].type].heal}}♥"
 			 ng-style="{top: determineCharY(enemy.position), left: determineCharX(enemy.position)}"
 		>
-			<div ng-if="isPaired(enemy.pairUpPartner)" class="charDiv mapCharOffsetLeft">
-				<img ng-src="{{getPairUnitIcon(enemy.pairUpPartner, 1)}}" class="mapCharCentered dimImage">
+			<div ng-if="isPaired(enemy.partner, enemy.stance)" class="charDiv mapCharOffsetLeft">
+				<img ng-src="{{getPairUnitIcon(enemy.partner, 1)}}" class="mapCharCentered dimImage">
 			</div>
-			<div class="charDiv" ng-class="isPaired(enemy.pairUpPartner) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
+			<div class="charDiv" ng-class="isPaired(enemy.partner, enemy.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
 				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered">
 				<div class="enemyNum">{{getEnemyNum(enemy.name)}}</div>
 			</div>
 			<div class="healthBarBack"></div>
 			<div class="healthBarFront" ng-style="{width:((enemy.currHp/enemy.maxHp)*28)+'px'}"></div>
 			<div class="healthBarBorder"></div>
-			<div ng-if="isPaired(enemy.pairUpPartner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+			<div ng-if="isPaired(enemy.partner, enemy.stance)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 			<!--<div ng-if="enemy[0]=='Ceal'" class="pairUpIcon"><img src="IMG/shield_boss.png"></div>
 			<div ng-if="enemy[0]=='Outlaw (M)' || enemy[0] == 'Outlaw (F)'" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>-->
 		</div>
@@ -68,7 +68,7 @@
 				<img src="IMG/close.png">
 			</div>
 			<!--Pair-Up button-->
-			<div class="enemyBarButton hoverImage" ng-if="isPaired(enemy.pairUpPartner)" ng-click="findPairUpChar(eIndex, 1)" title="Switch to Paired Unit" style="right:20px">
+			<div class="enemyBarButton hoverImage" ng-if="isPaired(enemy.partner, enemy.stance)" ng-click="findPairUpChar(eIndex, 1)" title="Switch to Paired Unit" style="right:20px">
 				<img src="IMG/switchpairup.png">
 			</div>
 		</div>
@@ -123,7 +123,7 @@
 		<!--Skill Gems-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
 		<div ng-repeat="skill in enemy.skills" class="infoElement hoverImage enemyGemPos" ng-mouseover="skillHoverIn(eIndex, $index)" ng-mouseleave="skillHoverOut(eIndex, $index)" ng-style="{left: fetchESklHorzPos($index)}">
-			<img ng-src="{{fetchSkillImage(skill.name, enemy.level, $index)}}">
+			<img ng-src="{{skill.spriteUrl}}">
 		</div>
 
 		<!--Enemy Stats (Str/Mag/Skl/Etc)-->
@@ -134,20 +134,20 @@
 
 		<!--Inventory-->
 		<div ng-repeat="weapon in enemy.inventory" ng-mouseenter="weaponHoverIn(eIndex, $index)" ng-mouseleave="weaponHoverOut(eIndex, $index)" class="infoElement redText hoverTan enemyInventoryBoxPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchEWeaponVerticalPos($index)}">
-			<span class="indentedEWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{getWeaponClassIcon(weapon.class)}}"/></span>
+			<span class="indentedEWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{weapon.spriteUrl}}"/></span>
 			<span class="indentedEnemyItem" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
 			<div class="enemyWeaponEffectIcons">
-				<img ng-if="weaponEffective(weapon.effect,'armor')" src="IMG/eff_armor.png">
-				<img ng-if="weaponEffective(weapon.effect,'flier')" src="IMG/eff_flying.png">
-				<img ng-if="weaponEffective(weapon.effect,'beast')" src="IMG/eff_beast.png">
-				<img ng-if="weaponEffective(weapon.effect,'dragon')" src="IMG/eff_dragon.png">
-				<img ng-if="weaponEffective(weapon.effect,'monster')" src="IMG/eff_monster.png">
+				<img ng-if="weaponEffective(weapon.effective,'armor')" src="IMG/eff_armor.png">
+				<img ng-if="weaponEffective(weapon.effective,'flier')" src="IMG/eff_flying.png">
+				<img ng-if="weaponEffective(weapon.effective,'beast')" src="IMG/eff_beast.png">
+				<img ng-if="weaponEffective(weapon.effective,'dragon')" src="IMG/eff_dragon.png">
+				<img ng-if="weaponEffective(weapon.effective,'monster')" src="IMG/eff_monster.png">
 			</div>
 		</div>
 
 		<!--Weapon ranks-->
 		<div ng-repeat="w in enemy.weaponRanks" class="infoElement enemyWeaponRankPos" ng-style="{left: fetchEWpnRankHorzPos($index)}">
-			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
+			<span ng-if="existsWeaponClass(w.class)" title="{{w.class}} Rank" style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
 			</span>
@@ -166,7 +166,7 @@
 			<div class="infoElement green whiteText enemyInventoryInfoPos" ng-if="weaponHoverOn(eIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchEWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
-					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.class}}
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.type}}
 				</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div ng-if="notItem(weapon.type)">
@@ -174,11 +174,16 @@
 					<div class="popOutText itemMightPos" style="left:80px">Hit: {{weapon.hit}}</div>
 					<div class="popOutText itemMightPos" style="right:0px">Crit: {{weapon.crit}}</div>
 					<div class="popOutText itemWeightPos">Avo: {{weapon.avo}}</div>
-					<div class="popOutText itemWeightPos" style="left:80px">Dodge: {{weapon.dodge}}</div>
 					<div class="popOutText itemWeightPos" style="right:0px">Range: {{weapon.range}}</div>
 					<div class="customDivider" style="top:58px"></div>
 				</div>
-				<div class="popOutText italicText" ng-style="{top: setDescriptionLoc(weapon.type)}">{{weapon.note}}</div>
+				<div class="popOutText" ng-class="{'scroll-up' : textTooLong(weapon.effect, weapon.desc)}" ng-style="{top: setDescriptionLoc(weapon.type), height: setItemDescHeight(weapon.type)}">
+					<p>
+						<span class="italicText">{{weapon.effect}}</span>
+						<span ng-if="weapon.effect.length > 0"><br /></span>
+						<span>{{weapon.desc}}</span>
+					</p>
+				</div>
 			</div>
 		</div>
 
@@ -205,7 +210,7 @@
 			<img src="IMG/close.png">
 		</div>
 		<!--Pair-Up button-->
-		<div class="infoElement dragBarButton hoverImage" title="Switch to Paired Unit" style="left:calc(100% - 38px)" ng-if="isPaired(char.pairUpPartner)" ng-click="findPairUpChar(cIndex, 0)">
+		<div class="infoElement dragBarButton hoverImage" title="Switch to Paired Unit" style="left:calc(100% - 38px)" ng-if="isPaired(char.partner, char.stance)" ng-click="findPairUpChar(cIndex, 0)">
 			<img src="IMG/switchpairup.png">
 		</div>
 		<!--Name-->
@@ -270,20 +275,20 @@
 
 		<!--Inventory-->
 		<div ng-repeat="weapon in char.inventory" ng-mouseenter="weaponHoverIn(cIndex, $index)" ng-mouseleave="weaponHoverOut(cIndex, $index)" class="infoElement redText hoverTan itemsPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchWeaponVerticalPos($index)}">
-			<span class="indentedWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{getWeaponClassIcon(weapon.class)}}"/></span>
+			<span class="indentedWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{weapon.spriteUrl}}"/></span>
 			<span class="indentedWeaponName" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
 			<div class="weaponEffectIcons">
-				<img ng-if="weaponEffective(weapon.effect,'armor')" src="IMG/eff_armor.png">
-				<img ng-if="weaponEffective(weapon.effect,'flier')" src="IMG/eff_flying.png">
-				<img ng-if="weaponEffective(weapon.effect,'beast')" src="IMG/eff_beast.png">
-				<img ng-if="weaponEffective(weapon.effect,'dragon')" src="IMG/eff_dragon.png">
-				<img ng-if="weaponEffective(weapon.effect,'monster')" src="IMG/eff_monster.png">
+				<img ng-if="weaponEffective(weapon.effective,'armor')" src="IMG/eff_armor.png">
+				<img ng-if="weaponEffective(weapon.effective,'flier')" src="IMG/eff_flying.png">
+				<img ng-if="weaponEffective(weapon.effective,'beast')" src="IMG/eff_beast.png">
+				<img ng-if="weaponEffective(weapon.effective,'dragon')" src="IMG/eff_dragon.png">
+				<img ng-if="weaponEffective(weapon.effective,'monster')" src="IMG/eff_monster.png">
 			</div>
 		</div>
 
 		<!--Weapon ranks-->
 		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index)}">
-			<span ng-if="existsWeapon(w.class)" title="{{w.class}} Rank" style="position:relative">
+			<span ng-if="existsWeaponRank(w.class, w.rank)" title="{{w.class}} Rank" style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankBackground"></div>
 				<div class="weaponRankBar" ng-style="{width:calcWeaponExp(w.exp)+'px'}"></div>
@@ -335,11 +340,16 @@
 					<div class="popOutText itemMightPos" style="left:80px">Hit: {{weapon.hit}}</div>
 					<div class="popOutText itemMightPos" style="right:0px">Crit: {{weapon.crit}}</div>
 					<div class="popOutText itemWeightPos">Avo: {{weapon.avo}}</div>
-					<div class="popOutText itemWeightPos" style="left:80px">Dodge: {{weapon.dodge}}</div>
 					<div class="popOutText itemWeightPos" style="right:0px">Range: {{weapon.range}}</div>
 					<div class="customDivider" style="top:58px"></div>
 				</div>
-				<div class="popOutText italicText" ng-style="{top: setDescriptionLoc(weapon.type)}">{{weapon.note}}</div>
+				<div class="popOutText" ng-class="{'scroll-up' : textTooLong(weapon.effect, weapon.desc)}" ng-style="{top: setDescriptionLoc(weapon.type), height: setItemDescHeight(weapon.type)}">
+					<p>
+						<span class="italicText">{{weapon.effect}}</span>
+						<span ng-if="weapon.effect.length > 0"><br /></span>
+						<span>{{weapon.desc}}</span>
+					</p>
+				</div>
 			</div>
 		</div>
 
