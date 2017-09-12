@@ -85,7 +85,7 @@
 		<!--Movement-->
 		<div class="infoElement darkTan tanText enemyHpMovPos" style="left:103px;width:87px">
 			<span class="enemyStatLabel">Mov</span>
-			<span class="indentedEnemyStat">{{enemy.mov}}</span>
+			<span class="indentedEnemyStat">{{getStatValue(eIndex, 'Mov', 1)}}</span>
 		</div>
 		<!--Attack-->
 		<div class="infoElement darkTan tanText enemyAtkHitPos" style="top:72px">
@@ -129,7 +129,7 @@
 		<!--Enemy Stats (Str/Mag/Skl/Etc)-->
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText enemyStatPos hoverBrown" ng-mouseover="statHoverIn(eIndex, stat[0])" ng-mouseleave="statHoverOut(eIndex, stat[0])" ng-style="{top: fetchEStatVerticalPos($index)}">
 			<span class="enemyStatLabel">{{stat[0]}}</span>
-			<span class="indentedEnemyStat" ng-style="{color: determineStatColor(eIndex, $index, stat[0], 1)}">{{enemy[stat[0]]}}</span>
+			<span class="indentedEnemyStat" ng-style="{color: determineStatColor(eIndex, stat[0], 1)}">{{getStatValue(eIndex, stat[0], 1)}}</span>
 		</div>
 
 		<!--Inventory-->
@@ -138,7 +138,7 @@
 			<span class="indentedEnemyItem" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
 			<div class="enemyWeaponEffectIcons">
 				<img ng-if="weaponEffective(weapon.effective,'armor')" src="IMG/eff_armor.png">
-				<img ng-if="weaponEffective(weapon.effective,'flier')" src="IMG/eff_flying.png">
+				<img ng-if="weaponEffective(weapon.effective,'flying')" src="IMG/eff_flying.png">
 				<img ng-if="weaponEffective(weapon.effective,'beast')" src="IMG/eff_beast.png">
 				<img ng-if="weaponEffective(weapon.effective,'dragon')" src="IMG/eff_dragon.png">
 				<img ng-if="weaponEffective(weapon.effective,'monster')" src="IMG/eff_monster.png">
@@ -191,10 +191,10 @@
 		<div ng-repeat="stat in statsList">
 			<div ng-if="statHoverOn(eIndex, stat[0])" class="infoElement green whiteText eStatInfoPos" ng-style="{top: stat[3]}">
 				<div class="popOutText popOutHeader">
-					<span>Base value: {{calcEnemyBaseStat(eIndex, stat[0])}}<br></span>
-					<span ng-if="validDebuff(enemy[stat[0]+'Buff'])">Buff/Debuff: {{enemy[stat[0]+"Buff"]}}<br></span>
-					<span ng-if="validDebuff(enemy['w'+stat[0]+'Buff'])">{{enemy.equippedWeapon}}: {{enemy["w"+stat[0]+"Buff"]}}<br></span>
-					<span ng-if="validDebuff(enemy['p'+stat[0]+'Buff'])">Pair-up: +{{enemy["p"+stat[0]+"Buff"]}}</span>
+					<span>Base value: {{enemy[stat[0]+"Base"]}}<br></span>
+					<span ng-if="enemy[stat[0]+'Buff'] != 0">Buff/Debuff: {{enemy[stat[0]+"Buff"]}}<br></span>
+					<span ng-if="enemy.inventory.itm0.name.indexOf('(E)') != -1 && enemy.inventory.itm0[stat[0]+'Eqpt'] != 0">{{enemy.inventory.itm0.name}}: {{enemy.inventory.itm0[stat[0]+"Eqpt"]}}<br></span>
+					<span ng-if="enemy.partner.length > 0 && enemy[stat[0]+'Pair'] != enemy[stat[0]+'Base']">Pair-up: +{{enemy[stat[0]+"Pair"] - enemy[stat[0]+"Base"]}}</span>
 				</div>
 			</div>
 		</div>
@@ -233,7 +233,7 @@
 		<!--Movement-->
 		<div class="infoElement paleTan redText movExpPos" style="top:120px;">
 			<span class="indentedExpMovLabel"><img src="IMG/movement.png" style="display:inline-block"></span>
-			<span class="indentedExpMovText">{{char.mov}}</span>
+			<span class="indentedExpMovText">{{getStatValue(cIndex, 'Mov', 0)}}</span>
 		</div>
 		<!--HP-->
 		<div class="infoElement darkTan tanText HpPos">
@@ -270,7 +270,7 @@
 		<!--Character Stats (Str/Mag/Skl/Etc)-->
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statsPos hoverBrown" ng-mouseover="statHoverIn(cIndex, stat[0])" ng-mouseleave="statHoverOut(cIndex, stat[0])" ng-style="{top: fetchStatVerticalPos($index)}">
 			<span class="indentedStatLabel">{{stat[0]}}</span>
-			<span class="indentedStat" ng-style="{color: determineStatColor(cIndex, $index, stat[0], 0)}">{{char[stat[0]]}}</span>
+			<span class="indentedStat" ng-style="{color: determineStatColor(cIndex, stat[0], 0)}">{{getStatValue(cIndex, stat[0], 0)}}</span>
 		</div>
 
 		<!--Inventory-->
@@ -279,7 +279,7 @@
 			<span class="indentedWeaponName" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
 			<div class="weaponEffectIcons">
 				<img ng-if="weaponEffective(weapon.effective,'armor')" src="IMG/eff_armor.png">
-				<img ng-if="weaponEffective(weapon.effective,'flier')" src="IMG/eff_flying.png">
+				<img ng-if="weaponEffective(weapon.effective,'flying')" src="IMG/eff_flying.png">
 				<img ng-if="weaponEffective(weapon.effective,'beast')" src="IMG/eff_beast.png">
 				<img ng-if="weaponEffective(weapon.effective,'dragon')" src="IMG/eff_dragon.png">
 				<img ng-if="weaponEffective(weapon.effective,'monster')" src="IMG/eff_monster.png">
@@ -291,7 +291,7 @@
 			<span ng-if="existsWeaponRank(w.class, w.rank)" title="{{w.class}} Rank" style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
 				<div class="weaponRankBackground"></div>
-				<div class="weaponRankBar" ng-style="{width:calcWeaponExp(w.exp)+'px'}"></div>
+				<div class="weaponRankBar" ng-style="{width:(w.exp*30)+'px'}"></div>
 				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
 			</span>
 		</div>
@@ -319,10 +319,10 @@
 			<div ng-if="statHoverOn(cIndex, stat[0])" class="infoElement green whiteText statInfoPos" ng-style="{top: stat[2]}">
 				<div class="italicText popOutText popOutHeader">{{stat[1]}}</div>
 				<div class="popOutText personalSkillBody">
-					<span>Base value: {{char["base" + stat[0]]}}<br></span>
-					<span ng-if="validDebuff(char[stat[0]+'Buff'])">Buff/Debuff: {{char[stat[0]+"Buff"]}}<br></span>
-					<span ng-if="validDebuff(char['w'+stat[0]+'Buff'])">{{char.equippedWeapon}}: {{char["w"+stat[0]+"Buff"]}}<br></span>
-					<span ng-if="validDebuff(char['p'+stat[0]+'Buff'])">Pair-up: +{{char["p"+stat[0]+"Buff"]}}</span>
+					<span>Base value: {{char[stat[0]+"Base"]}}<br></span>
+					<span ng-if="char[stat[0]+'Buff'] != 0">Buff/Debuff: {{char[stat[0]+"Buff"]}}<br></span>
+					<span ng-if="char.inventory.itm0.name.indexOf('(E)') != -1 && char.inventory.itm0[stat[0]+'Eqpt'] != 0">{{char.inventory.itm0.name}}: {{char.inventory.itm0[stat[0]+"Eqpt"]}}<br></span>
+					<span ng-if="char.partner.length > 0 && char[stat[0]+'Pair'] != char[stat[0]+'Base']">Pair-up: +{{char[stat[0]+"Pair"] - char[stat[0]+"Base"]}}</span>
 				</div>
 			</div>
 		</div>
@@ -332,7 +332,7 @@
 			<div class="infoElement green whiteText itemInfoPos" ng-if="weaponHoverOn(cIndex, $index) && validWeapon(weapon.name)" ng-style="{top: fetchWpnDescVerticalPos($index)}">
 				<div class="popOutText itemNamePos boldText">{{formatWeaponName(weapon.name)}}</div>
 				<div class="popOutText itemRankPos">
-					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.class}}
+					<span ng-if="hasWeaponRank(weapon.rank)">{{weapon.rank}} -</span> {{weapon.type}}
 				</div>
 				<div class="customDivider" style="top:22px"></div>
 				<div ng-if="notItem(weapon.type)">

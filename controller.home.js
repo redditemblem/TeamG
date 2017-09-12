@@ -44,6 +44,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         $location.path('/');
     else {
         $scope.charaData = DataService.getCharacters();
+        $scope.enemyData = DataService.getEnemies();
         $scope.mapUrl = DataService.getMap();
         $scope.rows = DataService.getRows();
         $scope.columns = DataService.getColumns();
@@ -272,49 +273,35 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
      *
      * toggle = 0 for char, 1 for enemy
      */
-    $scope.determineStatColor = function(character, index, stat, toggle) {
+    $scope.determineStatColor = function(cIndex, stat, toggle) {
         var char;
+        if (toggle == "0") char = $scope.charaData[cIndex];
+        else char = $scope.enemyData[cIndex];
 
-        if (toggle == "0") char = $scope.charaData[character];
-        else char = $scope.enemyData[character];
-
-        //Determine appropriate indicies for stat being evaluated (passed string)
-        var debuff = char[stat + "Buff"];
-        var weaponBuff = char["w" + stat + "Buff"];
-        var pairUp = char["p" + stat + "Buff"];
-
-        if (debuff == "") debuff = 0;
-        else debuff = parseInt(debuff);
-
-        weaponBuff = parseInt(weaponBuff);
-
-        if (pairUp == "") pairUp = 0;
-        else pairUp = parseInt(pairUp);
-
-        var totalBuffs = debuff + weaponBuff + pairUp;
-        if (totalBuffs > 0)
-            return STAT_BUFF_COLOR; //blue buff
-        else if (totalBuffs < 0)
-            return STAT_DEBUFF_COLOR //red debuff
-        return STAT_DEFAULT_COLOR;
+        var value = calcFinalStat(char, stat);
+        if(value > char[stat + "Base"]) return STAT_BUFF_COLOR;
+        if(value < char[stat + "Base"]) return STAT_DEBUFF_COLOR;
+        else return STAT_DEFAULT_COLOR;
     };
 
-    $scope.calcEnemyBaseStat = function(enemy, stat) {
-        var char = $scope.enemyData[enemy];
+    $scope.getStatValue = function(cIndex, stat, toggle){
+        var char;
+        if (toggle == "0") char = $scope.charaData[cIndex];
+        else char = $scope.enemyData[cIndex];
 
-        //Determine appropriate indicies for stat being evaluated (passed string)
-        var total = char[stat];
-        var debuff = char[stat + "Buff"];
-        var weaponBuff = char["w" + stat + "Buff"];
-        var pairUp = char["p" + stat + "Buff"];
+        return calcFinalStat(char, stat);
+    };
 
-        total = parseInt(total);
-        debuff = parseInt(debuff);
-        weaponBuff = parseInt(weaponBuff);
-        if (pairUp == "") pairUp = 0;
-        else pairUp = parseInt(pairUp);
+    function calcFinalStat(char, stat){
+        var pair = char[stat + "Pair"];
+        var buff = char[stat + "Buff"];
+        var weapon = 0;
 
-        return total - (debuff + weaponBuff + pairUp);
+        if(char.inventory.itm0.name.indexOf("(E)") != -1) weapon += char.inventory.itm0[stat + "Eqpt"]; //equipped weapon buff/debuff
+        for(var w in char.inventory)
+            weapon += char.inventory[w][stat + "Inv"]; //inventory buff/debuffs
+
+        return pair + buff + weapon;
     };
 
     $scope.validSkill = function(skill) {
@@ -371,7 +358,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
 
     //Checks if the passed "type" is listed in the effectiveness column of a character's weapon
-    //(Ex. Flier, Monster, Beast, Dragon, Armor)
+    //(Ex. Flying, Monster, Beast, Dragon, Armor)
     $scope.weaponEffective = function(types, goal) {
         types = types.toLowerCase();
         return types.indexOf(goal) != -1;
@@ -385,16 +372,6 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.weaponIcon = function(weaponName) {
         var c = weaponName.toLowerCase();
         return "IMG/rank_" + c + ".png";
-    };
-
-    //Calculates the percentage of weapon proficicency for a specific weapon,
-    //then returns the width of the progress bar in pixels
-    $scope.calcWeaponExp = function(exp) {
-        var slash = exp.indexOf("/");
-        var progress = parseInt(exp.substring(0, slash));
-        var total = parseInt(exp.substring(slash + 1, exp.length));
-
-        return (progress / total) * 30; //30 is the max number of pixels
     };
 
     //Checks if there is a value in the index

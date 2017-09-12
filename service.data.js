@@ -141,7 +141,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                         'SpdEqpt': parseInt(itm[17]) | 0,
                         'LckEqpt': parseInt(itm[18]) | 0,
                         'DefEqpt': parseInt(itm[19]) | 0,
-                        'MagEqpt': parseInt(itm[20]) | 0,
+                        'ResEqpt': parseInt(itm[20]) | 0,
+                        'MovEqpt' : 0,
                         'StrInv': parseInt(itm[30]) | 0,
                         'MagInv': parseInt(itm[31]) | 0,
                         'SklInv': parseInt(itm[32]) | 0,
@@ -275,7 +276,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'SpdBase': parseInt(c[23]) | 0,
                 'LckBase': parseInt(c[24]) | 0,
                 'DefBase': parseInt(c[25]) | 0,
-                'MagBase': parseInt(c[26]) | 0,
+                'ResBase': parseInt(c[26]) | 0,
                 'MovBase': parseInt(c[27]) | 0,
                 'weaknesses': c[28].length > 0 && c[28] != "-" ? c[28].split(",") : [],
                 'atk': parseInt(c[29]) | 0,
@@ -326,7 +327,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             var eqptIndex = itemArray.indexOf(c[35]);
             if(eqptIndex != -1){ //if there is an equipped item, move it to the head of the list
                 itemArray.splice(eqptIndex, 1);
-                itemArray.splice(0, 0, c[35]);
+                itemArray.splice(0, 0, c[35] + " (E)");
             }
 
             for(var j = 0; j < itemArray.length; j++)
@@ -370,7 +371,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'SpdBase': parseInt(e[19]) | 0,
                 'LckBase': parseInt(e[20]) | 0,
                 'DefBase': parseInt(e[21]) | 0,
-                'MagBase': parseInt(e[22]) | 0,
+                'ResBase': parseInt(e[22]) | 0,
                 'MovBase': parseInt(e[23]) | 0,
                 'level': e[24],
                 'position': e[25],
@@ -666,6 +667,15 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             return {
                 'name': name != undefined ? name : "",
                 'type' : "Mystery",
+                'effective' : "",
+                'StrInv': 0,
+                'MagInv': 0,
+                'SklInv': 0,
+                'SpdInv': 0,
+                'LckInv': 0,
+                'DefInv': 0,
+                'ResInv': 0,
+                'MovInv': 0,
                 'desc' : "This item could not be located."
             }
 
