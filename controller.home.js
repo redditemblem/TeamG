@@ -23,14 +23,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     const weaponVerticalPos = ["10px", "45px", "80px", "115px", "150px"];
     const weaponRankHorzPos = ["345px", "395px", "445px"];
     const weaponDescVerticalPos = ["10px", "35px", "60px", "85px", "105px"];
-    const skillVerticalPos = ["7px", "30px", "53px", "76px", "99px", "122px", "144px", "167px", "189px"];
+    const skillVerticalPos = ["7px", "37px", "68px", "97px", "128px", "160px"];
     const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
 
-    const eSkillHorzPos = ["3px", "24px", "45px", "66px", "87px", "108px", "129px", "150px", "171px"];
+    const eSkillHorzPos = ["7px", "47px", "87px", "127px", "167px"];
     const eStatVerticalPos = ["5px", "29px", "53px", "77px", "101px", "125px", "149px"];
     const eWeaponVerticalPos = ["5px", "34px", "63px", "92px", "121px"];
     const eWpnRankHorzPos = ["297px", "364px", "431px"];
-    const eSklDescHorzPos = ["5px", "26px", "47px", "68px", "89px", "110px", "131px", "150px", "169px"];
+    const eSklDescHorzPos = ["5px", "36px", "67px", "98px", "139px"];
     const eWpnDescVerticalPos = ["5px", "20px", "40px", "55px", "65px"];
 
     //Constants
@@ -308,21 +308,11 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return skill != "-" && skill != "";
     };
 
-    //Returns the image for a character's skill, if they're at the minimum
-    //level to obtain it. Otherwise, returns the blank skill image.
-    $scope.fetchSkillImage = function(skillName, charLvl, index) {
-        /*var minLvl = (index - 1) * 5;
-        if(minLvl == 0) minLvl = 1;*/
-
-        if (skillName == "-") // || minLvl > parseInt(charLvl))
-            return "IMG/SKL/skl_blank.png";
-
-        if (index == "0")
-            return "IMG/SKL/skl_personal.png";
-
-        skillName = skillName.toLowerCase();
-        skillName = skillName.replace(/ /g, "_");
-        return "IMG/SKL/skl_" + skillName + ".png";
+    $scope.fetchSkillIcon = function(url, name, index) {
+        if(url.length > 0) return url;
+        else if(name.length > 0 && index == 0) return "IMG/SKL/skl_personal.png";
+        else if(name.length > 0 && index > 0) return "IMG/SKL/skl_empty.png";
+        else return "IMG/SKL/skl_blank.png";
     };
 
     $scope.checkShields = function(num, shields) {

@@ -1,7 +1,7 @@
 app.service('DataService', ['$rootScope', function($rootScope) {
     const rowNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", "WW", "XX", "YY", "ZZ"];
     const sheetId = '1Y9xK4Dr02jSW_b_7pT6Cc25_qSwS2I6eeafECd2lu7k';
-    const updateVal = (100 / 13) + 0.1;
+    const updateVal = (100 / 14) + 0.1;
     const boxWidth = 31;
     const gridWidth = 1;
     var progress = 0;
@@ -10,7 +10,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     var enemies = null;
     var rows = [];
     var cols = [];
-    var map, characterData, enemyData, itemIndex, skillIndex, coordMapping, terrainIndex, terrainLocs;
+    var map, characterData, enemyData, classIndex, itemIndex, skillIndex, coordMapping, terrainIndex, terrainLocs;
 
     this.getCharacters = function() {
         return characters;
@@ -99,6 +99,37 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             for (var i = 0; i < images.length && i < enemyData.length; i++) {
                 enemyData[i].splice(3, 1, processImageURL(images[i])); //replace the element at index 3
+            }
+
+            updateProgressBar();
+            fetchClassIndex();
+        });
+    }
+
+    function fetchClassIndex() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "ROWS",
+            range: 'Class Info!A2:AY',
+        }).then(function(response) {
+            var results = response.result.values;
+            classIndex = {};
+
+            for (var i = 0; i < results.length; i++) {
+                var c = results[i];
+                if(c.length == 0 || c[0].length == 0) continue;
+
+                classIndex[c[0]] = {
+                    'name' : c[0],
+                    'StrPair' : parseInt(c[43]) | 0,
+                    'MagPair' : parseInt(c[44]) | 0,
+                    'SklPair' : parseInt(c[45]) | 0,
+                    'SpdPair' : parseInt(c[46]) | 0,
+                    'LckPair' : parseInt(c[47]) | 0,
+                    'DefPair' : parseInt(c[48]) | 0,
+                    'ResPair' : parseInt(c[49]) | 0,
+                    'MovPair' : parseInt(c[50]) | 0
+                }
             }
 
             updateProgressBar();
@@ -252,7 +283,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             var currObj = {
                 'name': c[0],
-                'class': c[1],
+                'class': getClass(c[1]),
                 'unitType': c[2],
                 'spriteUrl': c[3],
                 'level': c[4],
@@ -352,7 +383,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             var currObj = {
                 'name': e[0],
-                'class': e[1],
+                'class': getClass(e[1]),
                 'unitType': e[2],
                 'spriteUrl': e[3],
                 'currHp': parseInt(e[5]) | 0,
@@ -399,7 +430,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'skills': {},
                 'partner': e[55],
                 'stance': e[56],
-                'shields': e[57],
+                'shields': parseInt(e[57]) | 0,
                 'hpBuff': parseInt(e[59]) | 0,
                 'StrBuff': parseInt(e[60]) | 0,
                 'MagBuff': parseInt(e[61]) | 0,
@@ -688,7 +719,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || skillIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'notes': "This skill could not be located."
+                'desc': "This skill could not be located.",
+                'spriteUrl' : ""
             }
         else return skillIndex[name];
     };
@@ -697,7 +729,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || classIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'desc': ""
+                'StrPair' : 0,
+                'MagPair' : 0,
+                'SklPair' : 0,
+                'SpdPair' : 0,
+                'LckPair' : 0,
+                'DefPair' : 0,
+                'ResPair' : 0,
+                'MovPair' : 0
             }
         else return classIndex[name];
     };

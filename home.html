@@ -75,7 +75,7 @@
 		<!--Name-->
 		<div class="infoElement navy whiteText enemyNamePos">
 			<span class="boldText popOutText" style="margin-top:5px">{{enemy.name}}</span><br>
-			<span class="popOutText">Lv. {{enemy.level}} {{enemy.class}}</span>
+			<span class="popOutText">Lv. {{enemy.level}} {{enemy.class.name}}</span>
 		</div>
 		<!--HP-->
 		<div class="infoElement darkTan tanText enemyHpMovPos" style="left:5px;width:92px;">
@@ -114,16 +114,16 @@
 		<!--Shields-->
 		<div class="infoElement darkTan enemyShieldsPos" title="Dual Guard Shields">
 			<div style="position: relative; left: 52px; top: 1px;">
-				<div ng-repeat="val in [2,4,6,8,10]" style="display: block; float: left">
+				<div ng-repeat="val in [1,2,3,4,5,6,7,8,9,10]" style="display: block; float: left">
 					<img ng-src="{{checkShields(val, enemy.shields)}}">
 				</div>
 			</div>
 		</div>
 
-		<!--Skill Gems-->
+		<!--Skills-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
-		<div ng-repeat="skill in enemy.skills" class="infoElement hoverImage enemyGemPos" ng-mouseover="skillHoverIn(eIndex, $index)" ng-mouseleave="skillHoverOut(eIndex, $index)" ng-style="{left: fetchESklHorzPos($index)}">
-			<img ng-src="{{skill.spriteUrl}}">
+		<div ng-repeat="s in enemy.skills" class="infoElement hoverImage enemyGemPos" ng-mouseover="skillHoverIn(eIndex, $index)" ng-mouseleave="skillHoverOut(eIndex, $index)" ng-style="{left: fetchESklHorzPos($index)}">
+			<img ng-src="{{fetchSkillIcon(s.spriteUrl, s.name, $index)}}" />
 		</div>
 
 		<!--Enemy Stats (Str/Mag/Skl/Etc)-->
@@ -153,9 +153,9 @@
 			</span>
 		</div>
 
-		<!--Skill Gem Info Boxes-->
+		<!--Skill Info Boxes-->
 		<div ng-repeat="skill in enemy.skills">
-			<div ng-if="skillHoverOn(eIndex, $index) && validSkill(skill.name)" class="infoElement green whiteText enemySkillGemInfoPos" ng-style="{left: fetchESklDescHorzPos($index)}">
+			<div ng-if="skillHoverOn(eIndex, $index) && skill.name.length > 0" class="infoElement green whiteText enemySkillGemInfoPos" ng-style="{left: fetchESklDescHorzPos($index)}">
 				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
 				<div class="popOutText popOutBody">{{skill.desc}}</div>
 			</div>
@@ -219,7 +219,7 @@
 		</div>
 		<!--Primary class-->
 		<div class="infoElement paleTan redText classLvlPos" style="width:215px; left:10px">
-			<span class="indentedClassName">{{char.class}}</span>
+			<span class="indentedClassName">{{char.class.name}}</span>
 		</div>
 		<!--Current level-->
 		<div class="infoElement paleTan redText classLvlPos" style="width:60px; left:180px">
@@ -303,15 +303,15 @@
 
 		<!--Shields-->
 		<div class="infoElement shieldsPos" title="Dual Guard Shields">
-			<div ng-repeat="val in [2,4,6,8,10]" style="display: block; float: left">
+			<div ng-repeat="val in [1,2,3,4,5,6,7,8,9,10]" style="display: block; float: left">
 				<img ng-src="{{checkShields(val, char.shields)}}">
 			</div>
 		</div>
 
-		<!--Skill Gems-->
+		<!--Skills-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
-		<div ng-repeat="skill in char.skills" class="infoElement hoverImage skillGemPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
-			<img ng-src="{{fetchSkillImage(skill.name, char.level, $index)}}">
+		<div ng-repeat="s in char.skills" class="infoElement hoverImage skillGemPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
+			<img ng-src="{{fetchSkillIcon(s.spriteUrl, s.name, $index)}}" />
 		</div>
 
 		<!--Stat Info Boxes (Modifiers)-->
@@ -353,9 +353,9 @@
 			</div>
 		</div>
 
-		<!--Skill Gem Info Boxes-->
+		<!--Skill Info Boxes-->
 		<div ng-repeat="skill in char.skills">
-			<div ng-if="skillHoverOn(cIndex, $index)" class="infoElement green whiteText skillGemInfoPos" ng-style="{top: fetchSklDescVerticalPos($index)}">
+			<div ng-if="skillHoverOn(cIndex, $index) && skill.name.length > 0" class="infoElement green whiteText skillGemInfoPos" ng-style="{top: fetchSklDescVerticalPos($index)}">
 				<div class="boldText popOutText popOutHeader">{{skill.name}}</div>
 				<div class="popOutText popOutBody">{{skill.desc}}</div>
 			</div>
@@ -365,7 +365,7 @@
 		<div ng-if="pairUpHoverOn(cIndex)" class="infoElement green whiteText pairUpInfoPos">
 			<div class="popOutText popOutHeader boldText">Pair Up Bonuses</div>
 			<div class="popOutText popOutBody">
-				<span ng-repeat="stat in statsList">{{stat[0]}}: +{{char["pBonus"+stat[0]]}}<br/></span> Mov: +{{char.pBonusMov}}
+				<span ng-repeat="stat in statsList">{{stat[0]}}: +{{char.class[stat[0]+'Pair']}}<br/></span> Mov: +{{char.class.MovPair}}
 			</div>
 		</div>
 	</div>
