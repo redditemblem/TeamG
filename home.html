@@ -26,11 +26,11 @@
 			<!--Unit sprite-->
 			<div class="charDiv" ng-class="isPaired(char.partner, char.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
 				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
+				<div class="healthBarBack"></div>
+				<div class="healthBarFront" ng-style="{color: (currHp > maxHp ? 'purple' : 'skyblue'), width:((char.currHp/char.maxHp)*28)+'px'}"></div>
+				<div class="healthBarBorder"></div>
+				<div ng-if="isPaired(char.partner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 			</div>
-			<div class="healthBarBack"></div>
-			<div class="healthBarFront" ng-style="{width:((char.currHp/char.maxHp)*28)+'px'}"></div>
-			<div class="healthBarBorder"></div>
-			<div ng-if="isPaired(char.partner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 		</div>
 	</div>
 
@@ -48,14 +48,14 @@
 			</div>
 			<div class="charDiv" ng-class="isPaired(enemy.partner, enemy.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
 				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered">
-				<div class="enemyNum">{{getEnemyNum(enemy.name)}}</div>
+				<img class="enemyNum" ng-src="{{getEnemyNum(enemy.name)}}" />
+				<div class="healthBarBack"></div>
+				<div class="healthBarFront" ng-style="{color: (currHp > maxHp ? 'purple' : 'red'), width:((enemy.currHp/enemy.maxHp)*28)+'px'}"></div>
+				<div class="healthBarBorder"></div>
+				<div ng-if="isPaired(enemy.partner, enemy.stance)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+				<div ng-if="enemy.unitType.indexOf('boss') != -1" class="pairUpIcon"><img src="IMG/shield_boss.png"></div>
+				<div ng-if="enemy.unitType.indexOf('talk') != -1" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>
 			</div>
-			<div class="healthBarBack"></div>
-			<div class="healthBarFront" ng-style="{width:((enemy.currHp/enemy.maxHp)*28)+'px'}"></div>
-			<div class="healthBarBorder"></div>
-			<div ng-if="isPaired(enemy.partner, enemy.stance)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
-			<!--<div ng-if="enemy[0]=='Ceal'" class="pairUpIcon"><img src="IMG/shield_boss.png"></div>
-			<div ng-if="enemy[0]=='Outlaw (M)' || enemy[0] == 'Outlaw (F)'" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>-->
 		</div>
 	</div>
 

@@ -70,18 +70,8 @@
 
 .enemyNum{
 	position: absolute;
-	width: 9px;
-	height: 16px;
 	right: 2px;
-	bottom: 2px;
-	text-align: right;
-	font-weight: bold;
-	font-size: 12px;
-	text-shadow:
-   -1px -1px 0 #fff,  
-    1px -1px 0 #fff,
-    -1px 1px 0 #fff,
-     1px 1px 0 #fff;
+	bottom: 4px;
 }
 
 .enemyTalkBalloon{

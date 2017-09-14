@@ -151,20 +151,26 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         };
     };
 
-    //Parses an enemy's name to see if it contains a number at the end.
-    //If it does, it returns that number
-    $scope.getEnemyNum = function(name) {
-        if (name.lastIndexOf(" ") == -1 || name == undefined)
-            return "";
-        name = name.substring(name.lastIndexOf(" ") + 1, name.length);
-
-        if (name.match(/^[0-9]+$/) != null) return name;
-        else return "";
+    //Parses an enemy's name to see if it contains a number at the end
+    $scope.getEnemyNum = function(name){
+    	if(name.lastIndexOf(" ") == -1 || name == undefined)
+    		return "";
+    	name = name.substring(name.lastIndexOf(" ")+1, name.length);
+    	
+    	if(name.match(/^[0-9]+$/) != null) return "IMG/NUM/" + name + ".png";
+    	else return "";
     };
 
     $scope.validPosition = function(pos, stance) {
         return pos != "" && stance != "Backpack";
     };
+
+    $scope.getHealthBarColor = function(currHp, maxHp){
+        if(currHp > maxHp)
+		if(currHp > maxHp) return 'purple';
+		else if(cIndex.indexOf("char_") != -1) return 'skyBlue';
+		else return 'red';
+	};
 
     $scope.textTooLong = function(textA, textB){
 		return (textA.length + textB.length) > 150;
