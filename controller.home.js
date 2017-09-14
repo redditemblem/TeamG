@@ -58,12 +58,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index) {
-        return ((index+1) * (boxWidth + gridWidth)) + "px";
+        return ((index + 1) * (boxWidth + gridWidth)) + "px";
     };
 
     //Returns the horizontal position of a glowBox element
     $scope.determineGlowX = function(index) {
-        return ((index+1) * (boxWidth + gridWidth)) + "px";
+        return ((index + 1) * (boxWidth + gridWidth)) + "px";
     };
 
     //*************************\\
@@ -108,7 +108,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         if (toggle == "0") clickedChar = $scope.charaData[char];
         else clickedChar = $scope.enemyData[char];
 
-        var pairedUnit = locatePairedUnit(clickedChar.pairUpPartner, toggle);
+        var pairedUnit = locatePairedUnit(clickedChar.partner, toggle);
 
         //Toggle visibility
         $scope[char + "_displayBox"] = false;
@@ -120,6 +120,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
         pairBox.style.top = currBox.offsetTop + 'px';
         pairBox.style.left = currBox.offsetLeft + 'px';
+
     };
 
     function locatePairedUnit(unitName, toggle) {
@@ -151,38 +152,38 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         };
     };
 
-    $scope.calculateHPWidth = function(currHp, maxHp){
-        return Math.min((currHp/maxHp)*28, 28);
+    $scope.calculateHPWidth = function(currHp, maxHp) {
+        return Math.min((currHp / maxHp) * 28, 28);
     };
 
     //Parses an enemy's name to see if it contains a number at the end
-    $scope.getEnemyNum = function(name){
-    	if(name.lastIndexOf(" ") == -1 || name == undefined)
-    		return "";
-    	name = name.substring(name.lastIndexOf(" ")+1, name.length);
-    	
-    	if(name.match(/^[0-9]+$/) != null) return "IMG/NUM/" + name + ".png";
-    	else return "";
+    $scope.getEnemyNum = function(name) {
+        if (name.lastIndexOf(" ") == -1 || name == undefined)
+            return "";
+        name = name.substring(name.lastIndexOf(" ") + 1, name.length);
+
+        if (name.match(/^[0-9]+$/) != null) return "IMG/NUM/" + name + ".png";
+        else return "";
     };
 
     $scope.validPosition = function(pos, stance) {
         return pos != "" && stance != "Backpack";
     };
 
-    $scope.getHealthBarColor = function(currHp, maxHp){
-        if(currHp > maxHp)
-		if(currHp > maxHp) return 'purple';
-		else if(cIndex.indexOf("char_") != -1) return 'skyBlue';
-		else return 'red';
-	};
+    $scope.getHealthBarColor = function(currHp, maxHp) {
+        if (currHp > maxHp)
+            if (currHp > maxHp) return 'purple';
+            else if (cIndex.indexOf("char_") != -1) return 'skyBlue';
+        else return 'red';
+    };
 
-    $scope.textTooLong = function(textA, textB){
-		return (textA.length + textB.length) > 150;
-	};
+    $scope.textTooLong = function(textA, textB) {
+        return (textA.length + textB.length) > 150;
+    };
 
     //Using a character's coordinates, calculates their horizontal
     //position on the map
-    $scope.determineCharX = function(pos){
+    $scope.determineCharX = function(pos) {
         pos = pos.match(/[0-9]+/g)[0];
         pos = parseInt(pos);
         return (pos * (boxWidth + gridWidth)) + "px";
@@ -190,17 +191,17 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     //Using a character's coordinates, calculates their vertical
     //position on the map
-    $scope.determineCharY = function(pos){
-		pos = pos.match(/[a-zA-Z]+/g)[0];
-    	pos = parseInt(getPosLetterEquivalent(pos));
-    	return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
+    $scope.determineCharY = function(pos) {
+        pos = pos.match(/[a-zA-Z]+/g)[0];
+        pos = parseInt(getPosLetterEquivalent(pos));
+        return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
     };
-    
-    function getPosLetterEquivalent(letter){
-    	if(letter.length == 1) 
-    		return letter.charCodeAt(0) - 64; //single letter
-    	else
-			return letter.charCodeAt(0) - 38; //double letter
+
+    function getPosLetterEquivalent(letter) {
+        if (letter.length == 1)
+            return letter.charCodeAt(0) - 64; //single letter
+        else
+            return letter.charCodeAt(0) - 38; //double letter
     };
 
     //***********************\\
@@ -289,12 +290,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         else char = $scope.enemyData[cIndex];
 
         var value = calcFinalStat(char, stat);
-        if(value > char[stat + "Base"]) return STAT_BUFF_COLOR;
-        if(value < char[stat + "Base"]) return STAT_DEBUFF_COLOR;
+        if (value > char[stat + "Base"]) return STAT_BUFF_COLOR;
+        if (value < char[stat + "Base"]) return STAT_DEBUFF_COLOR;
         else return STAT_DEFAULT_COLOR;
     };
 
-    $scope.getStatValue = function(cIndex, stat, toggle){
+    $scope.getStatValue = function(cIndex, stat, toggle) {
         var char;
         if (toggle == "0") char = $scope.charaData[cIndex];
         else char = $scope.enemyData[cIndex];
@@ -302,13 +303,13 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return calcFinalStat(char, stat);
     };
 
-    function calcFinalStat(char, stat){
+    function calcFinalStat(char, stat) {
         var pair = char[stat + "Pair"];
         var buff = char[stat + "Buff"];
         var weapon = 0;
 
-        if(char.inventory.itm0.name.indexOf("(E)") != -1) weapon += char.inventory.itm0[stat + "Eqpt"]; //equipped weapon buff/debuff
-        for(var w in char.inventory)
+        if (char.inventory.itm0.name.indexOf("(E)") != -1) weapon += char.inventory.itm0[stat + "Eqpt"]; //equipped weapon buff/debuff
+        for (var w in char.inventory)
             weapon += char.inventory[w][stat + "Inv"]; //inventory buff/debuffs
 
         return pair + buff + weapon;
@@ -319,9 +320,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
 
     $scope.fetchSkillIcon = function(url, name, index) {
-        if(url.length > 0) return url;
-        else if(name.length > 0 && index == 0) return "IMG/SKL/skl_personal.png";
-        else if(name.length > 0 && index > 0) return "IMG/SKL/skl_empty.png";
+        if (url.length > 0) return url;
+        else if (name.length > 0 && index == 0) return "IMG/SKL/skl_personal.png";
+        else if (name.length > 0 && index > 0) return "IMG/SKL/skl_empty.png";
         else return "IMG/SKL/skl_blank.png";
     };
 
@@ -364,7 +365,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return types.indexOf(goal) != -1;
     };
 
-    $scope.existsWeaponRank = function(cls, rank){
+    $scope.existsWeaponRank = function(cls, rank) {
         return cls != "-" && rank != "-";
     };
 
@@ -398,10 +399,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         else return "60px";
     };
 
-    $scope.setItemDescHeight = function(type){
-		if(type == "Item" || type == "Trophy" || type == "Mystery") return "118px";
-    	else return "80px";
-	};
+    $scope.setItemDescHeight = function(type) {
+        if (type == "Item" || type == "Trophy" || type == "Mystery") return "118px";
+        else return "80px";
+    };
 
     //***************************\\
     // MOUSEOVER/MOUSEOUT EVENTS \\

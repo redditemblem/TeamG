@@ -117,18 +117,18 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             for (var i = 0; i < results.length; i++) {
                 var c = results[i];
-                if(c.length == 0 || c[0].length == 0) continue;
+                if (c.length == 0 || c[0].length == 0) continue;
 
                 classIndex[c[0]] = {
-                    'name' : c[0],
-                    'StrPair' : parseInt(c[43]) | 0,
-                    'MagPair' : parseInt(c[44]) | 0,
-                    'SklPair' : parseInt(c[45]) | 0,
-                    'SpdPair' : parseInt(c[46]) | 0,
-                    'LckPair' : parseInt(c[47]) | 0,
-                    'DefPair' : parseInt(c[48]) | 0,
-                    'ResPair' : parseInt(c[49]) | 0,
-                    'MovPair' : parseInt(c[50]) | 0
+                    'name': c[0],
+                    'StrPair': parseInt(c[43]) | 0,
+                    'MagPair': parseInt(c[44]) | 0,
+                    'SklPair': parseInt(c[45]) | 0,
+                    'SpdPair': parseInt(c[46]) | 0,
+                    'LckPair': parseInt(c[47]) | 0,
+                    'DefPair': parseInt(c[48]) | 0,
+                    'ResPair': parseInt(c[49]) | 0,
+                    'MovPair': parseInt(c[50]) | 0
                 }
             }
 
@@ -148,7 +148,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             itemIndex = {};
             for (var i = 0; i < results.length; i++) {
                 var itm = results[i];
-                if(itm.length == 0) continue;
+                if (itm.length == 0) continue;
 
                 if (itm[0].length > 0) { //if the item has a name
                     itemIndex[itm[0]] = {
@@ -173,7 +173,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                         'LckEqpt': parseInt(itm[18]) | 0,
                         'DefEqpt': parseInt(itm[19]) | 0,
                         'ResEqpt': parseInt(itm[20]) | 0,
-                        'MovEqpt' : 0,
+                        'MovEqpt': 0,
                         'StrInv': parseInt(itm[30]) | 0,
                         'MagInv': parseInt(itm[31]) | 0,
                         'SklInv': parseInt(itm[32]) | 0,
@@ -212,7 +212,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 skillIndex = {};
                 for (var i = 0; i < skills.length; i++) {
                     var s = skills[i];
-                    if(s.length == 0) continue;
+                    if (s.length == 0) continue;
 
                     if (s[0].length > 0) { //if the item has a name
                         skillIndex[s[0]] = {
@@ -229,49 +229,49 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         });
     };
 
-    function fetchTerrainIndex(){
-    	gapi.client.sheets.spreadsheets.values.get({
-    		spreadsheetId: sheetId,
-    		majorDimension: "ROWS",
-    		range: 'Terrain List!A2:K',
-    	}).then(function(response) {
-    		var rows = response.result.values;
-    		terrainIndex = {};
+    function fetchTerrainIndex() {
+        gapi.client.sheets.spreadsheets.values.get({
+            spreadsheetId: sheetId,
+            majorDimension: "ROWS",
+            range: 'Terrain List!A2:K',
+        }).then(function(response) {
+            var rows = response.result.values;
+            terrainIndex = {};
 
-    		for(var i = 0; i < rows.length; i++){
+            for (var i = 0; i < rows.length; i++) {
                 var r = rows[i];
-                if(r.length == 0 || r[0].length == 0) continue;
+                if (r.length == 0 || r[0].length == 0) continue;
 
-    			terrainIndex[r[0]] = {
-    				'avo' : parseInt(r[1]) | 0,
-    				'def' : parseInt(r[2]) | 0,
-    				'heal' : r[3],
-    				'Foot' :  r[4],
-    				'Beast' : r[5],
-    				'Mage' : r[6],
-    				'Mount (T1)' : r[7],
-                    'Mount (T2)' : r[8],
-                    'Flier' : r[9],
-    				'note' : r[10]
-    			}
-    		}
+                terrainIndex[r[0]] = {
+                    'avo': parseInt(r[1]) | 0,
+                    'def': parseInt(r[2]) | 0,
+                    'heal': r[3],
+                    'Foot': r[4],
+                    'Beast': r[5],
+                    'Mage': r[6],
+                    'Mount (T1)': r[7],
+                    'Mount (T2)': r[8],
+                    'Flier': r[9],
+                    'note': r[10]
+                }
+            }
 
-    		updateProgressBar();
-    		fetchTerrainChart();
-    	});
+            updateProgressBar();
+            fetchTerrainChart();
+        });
     };
 
-    function fetchTerrainChart(){
+    function fetchTerrainChart() {
         gapi.client.sheets.spreadsheets.values.get({
-    		spreadsheetId: sheetId,
-    		majorDimension: "ROWS",
-    		range: 'Terrain Coordinates!A1:ZZ',
+            spreadsheetId: sheetId,
+            majorDimension: "ROWS",
+            range: 'Terrain Coordinates!A1:ZZ',
         }).then(function(response) {
-    		coordMapping = response.result.values;
+            coordMapping = response.result.values;
 
-    		updateProgressBar();
-    		processCharacters();
-    	});
+            updateProgressBar();
+            processCharacters();
+        });
     };
 
     function processCharacters() {
@@ -289,7 +289,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'level': c[4],
                 'exp': c[5],
                 'gold': parseInt(c[6].substring(0, c[6].indexOf("|")).trim()) | 0,
-                'ore': parseInt(c[6].substring(c[6].indexOf("|")+1).trim()) | 0,
+                'ore': parseInt(c[6].substring(c[6].indexOf("|") + 1).trim()) | 0,
                 'position': c[7],
                 'currHp': parseInt(c[9]) | 0,
                 'maxHp': parseInt(c[10]) | 0,
@@ -356,16 +356,16 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             //Find and append weapons
             var itemArray = c.slice(36, 41);
             var eqptIndex = itemArray.indexOf(c[35]);
-            if(eqptIndex != -1){ //if there is an equipped item, move it to the head of the list
+            if (eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
                 itemArray.splice(eqptIndex, 1);
                 itemArray.splice(0, 0, c[35] + " (E)");
             }
 
-            for(var j = 0; j < itemArray.length; j++)
+            for (var j = 0; j < itemArray.length; j++)
                 currObj.inventory["itm" + j] = getItem(itemArray[j]);
 
-            for(var k = 47; k <= 52; k++)
-                currObj.skills["skl" + (k-46)] = getSkill(c[k]);
+            for (var k = 47; k <= 52; k++)
+                currObj.skills["skl" + (k - 46)] = getSkill(c[k]);
 
             characters["char_" + i] = currObj;
         }
@@ -450,16 +450,16 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             //Find and append weapons
             var itemArray = e.slice(34, 39);
             var eqptIndex = itemArray.indexOf(e[33]);
-            if(eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
+            if (eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
                 itemArray.splice(eqptIndex, 1);
                 itemArray.splice(0, 0, e[33]);
             }
 
-            for(var j = 0; j < itemArray.length; j++)
+            for (var j = 0; j < itemArray.length; j++)
                 currObj.inventory["itm" + j] = getItem(itemArray[j]);
 
-            for(var k = 46; k < 51; k++)
-                currObj.skills["skl" + (k-45)] = getSkill(e[k]);
+            for (var k = 46; k < 51; k++)
+                currObj.skills["skl" + (k - 45)] = getSkill(e[k]);
 
             enemies["enmy_" + i] = currObj;
         }
@@ -508,13 +508,13 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
         for (var r = 0; r < rows.length; r++)
             for (var c = 0; c < cols.length; c++)
-                terrainLocs[rows[r]+cols[c]] = getDefaultTerrainObj();
+                terrainLocs[rows[r] + cols[c]] = getDefaultTerrainObj();
 
         //Update terrain types from input list
         for (var r = 0; r < coordMapping.length; r++) {
             var row = coordMapping[r];
             for (var c = 0; c < cols.length && c < row.length; c++) {
-                if (row[c].length > 0) terrainLocs[rows[r]+cols[c]].type = row[c];
+                if (row[c].length > 0) terrainLocs[rows[r] + cols[c]].type = row[c];
             }
         }
 
@@ -697,8 +697,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || itemIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'type' : "Mystery",
-                'effective' : "",
+                'type': "Mystery",
+                'effective': "",
                 'StrInv': 0,
                 'MagInv': 0,
                 'SklInv': 0,
@@ -707,7 +707,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'DefInv': 0,
                 'ResInv': 0,
                 'MovInv': 0,
-                'desc' : "This item could not be located."
+                'desc': "This item could not be located."
             }
 
         var copy = Object.assign({}, itemIndex[name]);
@@ -720,7 +720,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             return {
                 'name': name != undefined ? name : "",
                 'desc': "This skill could not be located.",
-                'spriteUrl' : ""
+                'spriteUrl': ""
             }
         else return skillIndex[name];
     };
@@ -729,14 +729,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || classIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'StrPair' : 0,
-                'MagPair' : 0,
-                'SklPair' : 0,
-                'SpdPair' : 0,
-                'LckPair' : 0,
-                'DefPair' : 0,
-                'ResPair' : 0,
-                'MovPair' : 0
+                'StrPair': 0,
+                'MagPair': 0,
+                'SklPair': 0,
+                'SpdPair': 0,
+                'LckPair': 0,
+                'DefPair': 0,
+                'ResPair': 0,
+                'MovPair': 0
             }
         else return classIndex[name];
     };
