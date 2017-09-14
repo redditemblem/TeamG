@@ -46,12 +46,9 @@
 }
 
 .authButton{
-	position: relative;
+	position: absolute;
 	width: 100px;
 	height: 35px;
-	left: 50%;
-	margin-left: -50px;
-	margin-top: 25px;
  	border-radius: 10px;
  	border: 0px;
  	box-shadow: none;

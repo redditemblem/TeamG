@@ -56,6 +56,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         $location.path('/');
     };
 
+    $scope.launchConvoyDialog = function() { $scope.showConvoy = true; };
+	$scope.launchShopDialog = function(){ $scope.showShop = true; };
+
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index) {
         return ((index + 1) * (boxWidth + gridWidth)) + "px";
