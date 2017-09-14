@@ -151,6 +151,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         };
     };
 
+    $scope.calculateHPWidth = function(currHp, maxHp){
+        return Math.min((currHp/maxHp)*28, 28);
+    };
+
     //Parses an enemy's name to see if it contains a number at the end
     $scope.getEnemyNum = function(name){
     	if(name.lastIndexOf(" ") == -1 || name == undefined)

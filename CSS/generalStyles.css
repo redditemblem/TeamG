@@ -68,7 +68,6 @@ img{
 	height: 2px;
 	left: 2px;
 	top: 28px;
-	background-color: red;
 }
 
 .healthBarBorder{
@@ -211,6 +210,10 @@ img{
 .lightGreen{ background-color: #39af2b; }
 .green{ background-color: #216619; opacity: 0.95;}
 .blackBorder{ border: 1px solid black; }
+
+.redHp{ background-color: red; }
+.blueHp{ background-color: skyblue; }
+.purpleHp{ background-color: purple; }
 
 
 p{
