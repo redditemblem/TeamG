@@ -1,12 +1,16 @@
 <div class="backgroundBox"></div>
 <div id="dropArea" class="mapBox">
-	<img id="map" class="absolutePos" ng-src="{{mapUrl}}" />
+	<img id="map" ng-src="{{mapUrl}}" style="display: block;" />
+	<div style="display: block; height: 25px; margin-top: 5px;">
+		<button ng-click="launchConvoyDialog()" class="convoyButton">Convoy</button>
+		<button ng-click="launchShopDialog()" class="convoyButton">Shop</button>
+	</div>
 
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="absolutePos" ng-style="{top: determineGlowY(yIndex)}">
 		<div class="glowBox"
 			 ng-repeat="(indexX,column) in columns"
-			 title="({{row}}{{column}}) {{terrainLocs[row+column].type}}: {{terrainTypes[terrainLocs[row+column].type].avo}}🚶  {{terrainTypes[terrainLocs[row+column].type].def}}⛨ {{terrainTypes[terrainLocs[row+column].type].heal}}♥"
+			 title="({{column}}{{row}}) {{terrainLocs[column+row].type}}: {{terrainTypes[terrainLocs[column+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+row].type].heal}}♥"
 			 ng-style="{left: determineGlowX(indexX)}"></div>
 	</div>
 

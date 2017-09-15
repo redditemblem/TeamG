@@ -1,5 +1,5 @@
 app.service('ConvoyDataService', ['$rootScope', function ($rootScope) {
-    const sheetId = '1cMNIbAI401ZGosao0iSkAxn2H0HxypMAoQEepHW2hGw';
+    const sheetId = '1Y9xK4Dr02jSW_b_7pT6Cc25_qSwS2I6eeafECd2lu7k';
     var inventory;
 
     this.getItems = function(){ return inventory; };

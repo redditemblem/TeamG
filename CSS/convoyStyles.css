@@ -1,17 +1,18 @@
 .convoyButton{
     display: inline-block;
     cursor: pointer;
-    width: 80px;
-    height: 25px;
+    width: 75px;
+	height: 25px;
+ 	border-radius: 5px;
+ 	border: 0px;
+ 	box-shadow: none;
+ 	background-color: #003051;
+ 	color: white;
 }
 
-.convoyButtonText{
-    position: relative;
-    color: black;
-    font-family: Verdana;
-    font-size: 12px;
-    bottom: 26px;
-}
+.convoyButton:hover{
+    background-color: #0063a7;
+};
 
 .convoyLoadingButton{
     position: absolute;
@@ -29,7 +30,7 @@
     height: 500px;
     width: 1000px;
     margin:0 auto;
-    background-color: #f2f2f2;
+    background-color: #DAAC5E;
     box-shadow: 1px 1px 30px black;
     font-family: "Verdana";
     padding: 15px;
@@ -53,7 +54,7 @@ table{
     font-weight: bold;
     width: calc(100% - 17px);
     color: white;
-    background-color: #191919;
+    background-color: #490200;
     top: 5px;
     height: 25px;
 }
@@ -107,6 +108,7 @@ table{
     height: 12px;
     width: 12px;
     border: 2px solid #474747;
+    background-color: #EDE7DF;
     border-radius: 5px;
 }
 
@@ -118,7 +120,7 @@ table{
     position: relative;
     font-size: 18px;
     font-weight: bold;
-    color: purple;
+    color: green;
     right: 1px;
     bottom: 6px;
 }
@@ -133,12 +135,12 @@ table{
     border-radius: 5px;
  	border: 0px;
  	box-shadow: none;
- 	background-color: gray;
+ 	background-color: #BA7228;
  	color: white;
 }
 
 .showAllButton:hover{
-    background-color: #474747;
+    background-color: #965b1f;
 	cursor: pointer;
 }
 
@@ -148,12 +150,12 @@ table{
     border-radius: 5px;
  	border: 0px;
  	box-shadow: none;
- 	background-color: gray;
+ 	background-color: #BA7228;
  	color: white;
 }
 
 .sortButton:hover{
-    background-color: #474747;
+    background-color: #965b1f;
 	cursor: pointer;
 }
 
@@ -163,15 +165,15 @@ table{
     border-radius: 5px;
  	border: 0px;
  	box-shadow: none;
- 	background-color: gray;
+ 	background-color: #BA7228;
  	color: white;
 }
 
 .shopSortButton:hover{
-    background-color: #474747;
+    background-color: #965b1f;
 	cursor: pointer;
 }
 
 .red{
-    background-color: purple;
+    background-color: #216619;
 }

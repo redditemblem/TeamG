@@ -1,5 +1,5 @@
 app.service('DataService', ['$rootScope', function($rootScope) {
-    const rowNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", "WW", "XX", "YY", "ZZ"];
+    const columnNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "AA", "BB", "CC", "DD", "EE", "FF", "GG", "HH", "II", "JJ", "KK", "LL", "MM", "NN", "OO", "PP", "QQ", "RR", "SS", "TT", "UU", "VV", "WW", "XX", "YY", "ZZ"];
     const sheetId = '1Y9xK4Dr02jSW_b_7pT6Cc25_qSwS2I6eeafECd2lu7k';
     const updateVal = (100 / 14) + 0.1;
     const boxWidth = 31;
@@ -488,16 +488,15 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
     function getMapDimensions() {
         var map = document.getElementById('mapImg');
-        var height = map.naturalHeight; //calculate the height of the map
 
+        var height = map.naturalHeight; //calculate the height of the map
         height = (height / (boxWidth + gridWidth)) - 2;
-        rows = rowNames.slice(0, height);
+        for (var i = 0; i < height; i++)
+            rows.push(i + 1);
 
         var width = map.naturalWidth; //calculate the width of the map
         width = (width / (boxWidth + gridWidth)) - 2;
-
-        for (var i = 0; i < width; i++)
-            cols.push(i + 1);
+        cols = columnNames.slice(0, width);
 
         updateProgressBar();
         initializeTerrain();
@@ -508,13 +507,13 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
         for (var r = 0; r < rows.length; r++)
             for (var c = 0; c < cols.length; c++)
-                terrainLocs[rows[r] + cols[c]] = getDefaultTerrainObj();
+                terrainLocs[cols[c] + rows[r]] = getDefaultTerrainObj();
 
         //Update terrain types from input list
         for (var r = 0; r < coordMapping.length; r++) {
             var row = coordMapping[r];
             for (var c = 0; c < cols.length && c < row.length; c++) {
-                if (row[c].length > 0) terrainLocs[rows[r] + cols[c]].type = row[c];
+                if (row[c].length > 0) terrainLocs[cols[c] + rows[r]].type = row[c];
             }
         }
 

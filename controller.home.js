@@ -187,17 +187,17 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Using a character's coordinates, calculates their horizontal
     //position on the map
     $scope.determineCharX = function(pos) {
-        pos = pos.match(/[0-9]+/g)[0];
-        pos = parseInt(pos);
-        return (pos * (boxWidth + gridWidth)) + "px";
+        pos = pos.match(/[a-zA-Z]+/g)[0];
+        pos = parseInt(getPosLetterEquivalent(pos));
+        return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
     };
 
     //Using a character's coordinates, calculates their vertical
     //position on the map
     $scope.determineCharY = function(pos) {
-        pos = pos.match(/[a-zA-Z]+/g)[0];
-        pos = parseInt(getPosLetterEquivalent(pos));
-        return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
+        pos = pos.match(/[0-9]+/g)[0];
+        pos = parseInt(pos);
+        return (pos * (boxWidth + gridWidth)) + "px";
     };
 
     function getPosLetterEquivalent(letter) {
@@ -364,6 +364,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Checks if the passed "type" is listed in the effectiveness column of a character's weapon
     //(Ex. Flying, Monster, Beast, Dragon, Armor)
     $scope.weaponEffective = function(types, goal) {
+        if(types == undefined) return false;
         types = types.toLowerCase();
         return types.indexOf(goal) != -1;
     };

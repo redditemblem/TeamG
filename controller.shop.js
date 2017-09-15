@@ -28,9 +28,8 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
       'Axe' : '#5eba60',
       'Bow' : '#fccc7e',
       'Knife' : '#fafc7e',
-      'Light' : '#fbffc9',
-      'Anima' : '#fc7eaa',
-      'Dark' : '#6c5372',
+      'Tome' : '#fc7eaa',
+      'Stone' : '#6c5372',
       'Staff' : '#ceebed'
     }
 
@@ -41,9 +40,8 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
     $scope.showAxe = true;
     $scope.showBow = true;
     $scope.showKnife = true;
-    $scope.showLight = true;
-    $scope.showAnima = true;
-    $scope.showDark = true;
+    $scope.showTome = true;
+    $scope.showStone = true;
     $scope.showStaff = true;
     $scope.showOther = true;
 
@@ -52,8 +50,7 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
     };
 
     $scope.displayItemType = function(type){
-      if(type == "None" || type == "Gear" || type == "Consumable" || type == "Item") return $scope.showOther;
-      if(type == "Anima" || type == "Light" || type == "Dark") return $scope.showTome;
+      if(type == "None" || type == "Trophy" || type == "Consumable" || type == "Item") return $scope.showOther;
       return $scope["show" + type] == true;
     };
 
@@ -67,7 +64,7 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
 
     $scope.allChecked = function(){
       return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife
-          && $scope.showLight && $scope.showAnima && $scope.showDark && $scope.showStaff && $scope.showOther;
+          && $scope.showTome && $scope.showStone && $scope.showStaff && $scope.showOther;
     };
 
     $scope.setAllCheckboxes = function(){
@@ -75,13 +72,16 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
         $scope.showSword = val;
         $scope.showLance = val;
         $scope.showAxe = val;
+        $scope.showTome = val;
         $scope.showBow = val;
         $scope.showKnife = val;
-        $scope.showLight = val;
-        $scope.showAnima = val;
-        $scope.showDark = val;
+        $scope.showStone = val;
         $scope.showStaff = val;
         $scope.showOther = val;
+    };
+
+    $scope.hasUses = function(type){
+      return type == "Item" || type == "Staff";
     };
 
     $scope.closeShop = function() {
