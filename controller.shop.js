@@ -1,36 +1,36 @@
-app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDataService){
+app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDataService) {
     $scope.items = [];
     var loadingListener;
 
     //Fetch shop data
-    $scope.fetchShop = function(){
-      if($scope.refreshing == true) return;
+    $scope.fetchShop = function() {
+        if ($scope.refreshing == true) return;
 
-      $scope.refreshing = true;
-      loadingListener = $scope.$on('shop-load-finished', function(event) {
-        loadingListener();
-        $scope.refreshing = false;
-        $scope.items = ShopDataService.getItems();
-        $scope.$apply(); //force update of items list
-      });
+        $scope.refreshing = true;
+        loadingListener = $scope.$on('shop-load-finished', function(event) {
+            loadingListener();
+            $scope.refreshing = false;
+            $scope.items = ShopDataService.getItems();
+            $scope.$apply(); //force update of items list
+        });
 
-      ShopDataService.loadShopData();
+        ShopDataService.loadShopData();
     };
 
     //Initialize items list, load it if it hasn't been already
-    if(ShopDataService.getItems() == null) $scope.fetchShop();
+    if (ShopDataService.getItems() == null) $scope.fetchShop();
     else $scope.items = ShopDataService.getItems();
 
     //Color Constants
     const ROW_COLORS = {
-      'Sword' : '#ff8282',
-      'Lance' : '#8290ff',
-      'Axe' : '#5eba60',
-      'Bow' : '#fccc7e',
-      'Knife' : '#fafc7e',
-      'Tome' : '#fc7eaa',
-      'Stone' : '#6c5372',
-      'Staff' : '#ceebed'
+        'Sword': '#ff8282',
+        'Lance': '#8290ff',
+        'Axe': '#5eba60',
+        'Bow': '#fccc7e',
+        'Knife': '#fafc7e',
+        'Tome': '#fc7eaa',
+        'Stone': '#6c5372',
+        'Staff': '#ceebed'
     }
 
     //Filter settings
@@ -45,29 +45,31 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
     $scope.showStaff = true;
     $scope.showOther = true;
 
-    $scope.getItemSortOrder = function(){
-      return sortOrder;
+    $scope.getItemSortOrder = function() {
+        return sortOrder;
     };
 
-    $scope.displayItemType = function(type){
-      if(type == "None" || type == "Trophy" || type == "Consumable" || type == "Item") return $scope.showOther;
-      return $scope["show" + type] == true;
+    $scope.displayItemType = function(type) {
+        if (type == "None" || type == "Trophy" || type == "Consumable" || type == "Item") return $scope.showOther;
+        return $scope["show" + type] == true;
     };
 
-    $scope.updateSortOrder = function(newOrder){ sortOrder = newOrder; };
-
-    $scope.getRowColor = function(type){
-      var color = ROW_COLORS[type];
-      if(color != undefined) return color;
-      else return 'lightgray';
+    $scope.updateSortOrder = function(newOrder) {
+        sortOrder = newOrder;
     };
 
-    $scope.allChecked = function(){
-      return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife
-          && $scope.showTome && $scope.showStone && $scope.showStaff && $scope.showOther;
+    $scope.getRowColor = function(type) {
+        var color = ROW_COLORS[type];
+        if (color != undefined) return color;
+        else return 'lightgray';
     };
 
-    $scope.setAllCheckboxes = function(){
+    $scope.allChecked = function() {
+        return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife &&
+            $scope.showTome && $scope.showStone && $scope.showStaff && $scope.showOther;
+    };
+
+    $scope.setAllCheckboxes = function() {
         var val = !($scope.allChecked());
         $scope.showSword = val;
         $scope.showLance = val;
@@ -80,11 +82,11 @@ app.controller('ShopCtrl', ['$scope', 'ShopDataService', function($scope, ShopDa
         $scope.showOther = val;
     };
 
-    $scope.hasUses = function(type){
-      return type == "Item" || type == "Staff";
+    $scope.hasUses = function(type) {
+        return type == "Item" || type == "Staff";
     };
 
     $scope.closeShop = function() {
-      $scope.$parent.$parent.showShop = false;
+        $scope.$parent.$parent.showShop = false;
     };
 }]);

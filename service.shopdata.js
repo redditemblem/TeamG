@@ -15,7 +15,7 @@ app.service('ShopDataService', ['$rootScope', function($rootScope) {
             var items = response.result.values;
             inventory = [];
 
-            for (var i = 1; i < items.length; i++) {
+            for (var i = 0; i < items.length; i++) {
                 var c = items[i];
                 if (c.length == 0 || c[0].length == 0) continue;
 
