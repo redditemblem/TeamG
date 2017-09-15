@@ -50,7 +50,7 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
     };
 
     $scope.displayItemType = function(type) {
-        if (type == "None" || type == "Gear" || type == "Consumable" || type == "Item") return $scope.showOther;
+        if (type == "None" || type == "Trophy" || type == "Consumable" || type == "Item") return $scope.showOther;
         return $scope["show" + type] == true;
     };
 
@@ -66,7 +66,7 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
 
     $scope.allChecked = function() {
         return $scope.showSword && $scope.showLance && $scope.showAxe && $scope.showBow && $scope.showKnife &&
-            $scope.showLight && $scope.showAnima && $scope.showDark && $scope.showStaff && $scope.showOther;
+            $scope.showTome && $scope.showStone && $scope.showStaff && $scope.showOther;
     };
 
     $scope.setAllCheckboxes = function() {
@@ -76,11 +76,14 @@ app.controller('ConvoyCtrl', ['$scope', 'ConvoyDataService', function($scope, Co
         $scope.showAxe = val;
         $scope.showBow = val;
         $scope.showKnife = val;
-        $scope.showLight = val;
-        $scope.showAnima = val;
-        $scope.showDark = val;
+        $scope.showTome = val;
+        $scope.showStone = val;
         $scope.showStaff = val;
         $scope.showOther = val;
+    };
+
+    $scope.hasUses = function(type) {
+        return type == "Item" || type == "Trophy" || type == "Staff";
     };
 
     $scope.closeConvoy = function() {

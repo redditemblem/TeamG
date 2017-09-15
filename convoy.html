@@ -52,11 +52,11 @@
                 <tr class="inventoryRow">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
-                    <td>
-                        <span ng-if="hasUses(item.type)">{{item.might}}</span>
+                    <td style="text-align: center;">
+                        <span ng-if="hasUses(item.type) && item.might > 0">{{item.might}}</span>
                         <span ng-if="!hasUses(item.type)">∞</span>
                     </td>
-                    <td>{{item.rank}}</td>
+                    <td style="text-align: center;">{{item.rank}}</td>
                     <td>
                         <span ng-if="!hasUses(item.type)">{{item.might}}</span>
                         <span ng-if="hasUses(item.type)">0</span>
@@ -117,12 +117,12 @@
                 <span ng-if="!allChecked()">Select All</span>
             </button>
 </div>
-<div style="margin-top: 15px; display: inline-block; height: 50px; width: 360px;">
+<div style="margin-top: 15px; display: inline-block; height: 50px; width: 340px;">
     <button ng-click="updateSortOrder('name')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'name'}">Name</button>
     <button ng-click="updateSortOrder('type')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'type'}">Type</button>
     <button ng-click="updateSortOrder('rank')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'rank'}">Rank</button>
-    <br />
     <button ng-click="updateSortOrder('-might')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-might'}">Might</button>
+    <br />
     <button ng-click="updateSortOrder('-hit')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-hit'}">Hit</button>
     <button ng-click="updateSortOrder('-crit')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-crit'}">Crit</button>
     <button ng-click="updateSortOrder('rangeVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'rangeVal'}">Range</button>
