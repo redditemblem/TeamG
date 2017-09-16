@@ -33,7 +33,7 @@ app.service('ShopDataService', ['$rootScope', function($rootScope) {
                     'avo': c[11],
                     'cEva': c[12],
                     'range': c[13],
-                    'rangeVal': parseInt(c[13].substring(c[13].lastIndexOf("~")).trim()) | 0,
+                    'rangeVal': parseInt(c[13].substring(c[13].lastIndexOf("~")+1).trim()) | 0,
                     'desc': c[14] != undefined ? c[14] : ""
                 })
             }
