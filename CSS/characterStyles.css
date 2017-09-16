@@ -70,8 +70,9 @@
 
 .indentedWeaponName{
 	position: absolute;
+	font-size: 12px;
 	left:31px;
-	top:5px;
+	top:9px;
 }
 
 .indentedWeaponIcon{
