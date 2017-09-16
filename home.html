@@ -218,16 +218,12 @@
 			<img src="IMG/switchpairup.png">
 		</div>
 		<!--Name-->
-		<div class="infoElement navy whiteText charNamePos" style="text-align:center">
-			<span style="vertical-align:middle">{{char.name}}</span>
-		</div>
-		<!--Primary class-->
-		<div class="infoElement paleTan redText classLvlPos" style="width:215px; left:10px">
-			<span class="indentedClassName">{{char.class.name}}</span>
-		</div>
-		<!--Current level-->
-		<div class="infoElement paleTan redText classLvlPos" style="width:60px; left:180px">
-			<span class="rightIndented">LV. {{char.level}}</span>
+		<div class="infoElement navy whiteText charNamePos">
+			<div class="charPortrait" ng-style="{'background-image': fetchCharPortrait(char.name)}"></div>
+			<div style="position: relative; top: 15px;">
+				<div class="boldText">{{char.name}}</div>
+				<div class="indentedClassName">LV. {{char.level}} {{char.class.name}}</div>
+			</div>
 		</div>
 		<!--Current EXP-->
 		<div class="infoElement paleTan redText movExpPos" style="top:90px;">

@@ -91,9 +91,7 @@
 }
 
 .indentedClassName{
-	position: absolute;
-	left:10px;
-	top:5px;
+	font-size: 12px;
 }
 
 .indentedExpMovLabel{
@@ -246,11 +244,13 @@
 }
 
 .charNamePos{
-	font-size:25px;
-	width:230px;
+	font-size:20px;
+	width:220px;
 	left:10px;
 	top:10px;
-	height:40px;
+	height:75px;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .pairUpIcon{
@@ -259,4 +259,15 @@
 	height: 11px;
 	left: 1px;
 	bottom: 8px;
+}
+
+.charPortrait{
+	position: absolute;
+	top: 0px; 
+	right: 0px;
+	height: 75px;
+	width: 150px;
+	border-top-right-radius: 10px;
+	border-bottom-right-radius: 10px;
+	box-shadow: inset 50px 0  50px -5px #332F40;
 }

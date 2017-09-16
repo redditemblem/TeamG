@@ -274,6 +274,10 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     // PROCESSING/FORMATTING \\
     //***********************\\
 
+    $scope.fetchCharPortrait = function(name){
+        return `url('IMG/PORT/${name}.png')`;
+    };
+
     //Returns true if the value in the passed attribute is >= 0
     $scope.checkRate = function(stat) {
         return parseInt(stat) >= 0;
