@@ -571,7 +571,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
         //Finish load
         updateProgressBar();
-    }
+    };
 
     function calculateCharacterRange(char, index) {
         var list = [];
