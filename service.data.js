@@ -589,8 +589,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             for (var i in char.inventory) {
                 var item = char.inventory[i];
                 var r = formatItemRange(item.range);
-                if (isAttackingItem(item.type, item.crit, item.avo, item.cEva) && r > maxAtkRange && r <= 10) maxAtkRange = r;
-                else if (!isAttackingItem(item.type, item.crit, item.avo, item.cEva) && r > maxHealRange && r <= 10) maxHealRange = r;
+                if (isAttackingItem(item.type, item.critDmg) && r > maxAtkRange && r <= 10) maxAtkRange = r;
+                else if (!isAttackingItem(item.type, item.critDmg) && r > maxHealRange && r <= 10) maxHealRange = r;
             }
 
             var params = {
@@ -696,9 +696,9 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         return parseInt(range) | 0;
     };
 
-    function isAttackingItem(wpnClass, crit, avo, cEva) {
+    function isAttackingItem(wpnClass, critDmg) {
         if(wpnClass == "Staff")
-            return crit == 0 && avo == 0 && cEva == 0;
+            return critDmg != 0;
         else return wpnClass != "Item" && wpnClass != "Trophy" && wpnClass != "Mystery";
     };
 
@@ -742,9 +742,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'name': name != undefined ? name : "",
                 'type': "Mystery",
                 'effective': "",
-                'crit' : 0,
-                'avo' : 0,
-                'cEva' : 0,
+                'critDmg' : 0,
                 'range' : "0",
                 'StrInv': 0,
                 'MagInv': 0,
