@@ -585,7 +585,6 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             var maxAtkRange = 0;
             var maxHealRange = 0;
-
             for (var i in char.inventory) {
                 var item = char.inventory[i];
                 var r = formatItemRange(item.range);
@@ -593,11 +592,23 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 else if (!isAttackingItem(item.type, item.critDmg) && r > maxHealRange && r <= 10) maxHealRange = r;
             }
 
+            var hasPass = false;
+            var hasSeaLegs = false;
+            for(var s in char.skills){
+                var skl = char.skills[s];
+                switch(skl.name){
+                    case "Pass" : hasPass = true; break;
+                    case "Sea Legs" : hasSeaLegs = true; break;
+                }
+            }
+
             var params = {
                 'atkRange' : maxAtkRange,
                 'healRange' : maxHealRange,
                 'terrainClass' : char.class.terrainType,
-                'affiliation' : index.indexOf("char_") > -1 ? "char" : "enemy"
+                'affiliation' : index.indexOf("char_") > -1 ? "char" : "enemy",
+                'hasPass' : hasPass,
+                'hasSeaLegs' : hasSeaLegs
             };
 
             recurseRange(horz, vert, range, params, list, "_");
@@ -629,14 +640,15 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 		if(trace.length > 1){
 			var classCost = terrainIndex[tile.type][params.terrainClass];
 
-			//Determine traversal cost
-			if( classCost == undefined
+            //Determine traversal cost
+            if(params.hasSeaLegs && (tile.type == "Sea" || tile.type == "Lake" || tile.type == "Big Puddle") && range >= 2) range -= 2;
+			else if( classCost == undefined
 			   || classCost == "-"
-			   || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation)
+			   || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation && !params.hasPass)
 			   || (parseFloat(classCost) > range)
 			){
 				return;
-			}
+            }
 			else range -= parseFloat(classCost);
 		}
 
