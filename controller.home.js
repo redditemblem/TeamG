@@ -79,14 +79,17 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         var bool = $scope[char + "_displayBox"];
         if (bool == undefined || bool == false) {
             positionCharBox(char);
+            toggleCharRange(char, 1);
             $scope[char + "_displayBox"] = true;
         } else {
+            toggleCharRange(char, -1);
             $scope[char + "_displayBox"] = false;
         }
     };
 
-    $scope.removeData = function(index) {
-        $scope[index + "_displayBox"] = false;
+    $scope.removeData = function(char) {
+        toggleCharRange(char, -1);
+        $scope[char + "_displayBox"] = false;
     };
 
     $scope.checkCharToggle = function(index) {
@@ -117,13 +120,15 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         $scope[char + "_displayBox"] = false;
         $scope[pairedUnit.unitLoc + "_displayBox"] = true;
 
-        //var currEnemy = document.getElementById(char);
         var currBox = document.getElementById(char + '_box');
         var pairBox = document.getElementById(pairedUnit.unitLoc + '_box');
 
         pairBox.style.top = currBox.offsetTop + 'px';
         pairBox.style.left = currBox.offsetLeft + 'px';
 
+        //Toggle ranges
+        toggleCharRange(char, -1);
+        toggleCharRange(pairedUnit.unitLoc, 1);
     };
 
     function locatePairedUnit(unitName, toggle) {
@@ -206,6 +211,32 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         else
             return letter.charCodeAt(0) - 38; //double letter
     };
+
+    function toggleCharRange(char, val){
+        var unit = undefined;
+        if(char.indexOf("char") != -1) unit = $scope.charaData[char];
+        else unit = $scope.enemyData[char];
+
+		var movRangeList = unit.range;
+		var atkRangeList = unit.atkRange;
+		var healRangeList = unit.healRange;
+
+		for(var i = 0; i < movRangeList.length; i++)
+			$scope.terrainLocs[movRangeList[i]].movCount += val;
+		for(var j = 0; j < atkRangeList.length; j++)
+			$scope.terrainLocs[atkRangeList[j]].atkCount += val;
+		for(var k = 0; k < healRangeList.length; k++)
+			$scope.terrainLocs[healRangeList[k]].healCount += val;
+	};
+
+    $scope.determineGlowColor = function(loc){
+		if($scope.terrainLocs == undefined) return '';
+		var terrainInfo = $scope.terrainLocs[loc];
+		if(terrainInfo.movCount > 0) return 'blue';
+		if(terrainInfo.atkCount > 0) return 'red';
+		if(terrainInfo.healCount > 0) return 'green';
+		return '';
+	};
 
     //***********************\\
     // POSITION CALCULATIONS \\

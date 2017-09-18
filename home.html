@@ -11,7 +11,9 @@
 		<div class="glowBox"
 			 ng-repeat="(indexX,column) in columns"
 			 title="({{column}}{{row}}) {{terrainLocs[column+row].type}}: {{terrainTypes[terrainLocs[column+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+row].type].heal}}♥"
-			 ng-style="{left: determineGlowX(indexX)}"></div>
+			 ng-style="{left: determineGlowX(indexX)}">
+			 <div style="width: 100%; height: 100%; opacity: 0.5;" ng-style="{'background-color': determineGlowColor(column+row)}"></div>
+		</div>
 	</div>
 
 	<!--Draw characters-->
@@ -68,7 +70,7 @@
 		<!--Buttons-->
 		<div class="absolutePos olive enemyBar">
 			<!--Close button-->
-			<div class="enemyBarButton hoverImage" title="Close" ng-click="removeData(eIndex)" style="right:2px">
+			<div class="enemyBarButton hoverImage" title="Close" ng-click="removeData(enemy, eIndex)" style="right:2px">
 				<img src="IMG/close.png">
 			</div>
 			<!--Pair-Up button-->
