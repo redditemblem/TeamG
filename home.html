@@ -33,7 +33,7 @@
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="char.currHp > char.maxHp ? 'purpleHp' : 'blueHp'" ng-style="{width: calculateHPWidth(char.currHp, char.maxHp)+'px'}"></div>
 				<div class="healthBarBorder"></div>
-				<div ng-if="isPaired(char.partner)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
+				<div ng-if="isPaired(char.partner, char.stance)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
 			</div>
 		</div>
 	</div>
