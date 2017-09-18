@@ -519,11 +519,11 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         }
 
         for (var c in characters)
-            if (terrainLocs[characters[c].position] != undefined)
+            if (terrainLocs[characters[c].position] != undefined && characters[c].stance != "Backpack")
                 terrainLocs[characters[c].position].occupiedAffiliation = "char";
 
         for (var e in enemies)
-            if (terrainLocs[enemies[e].position] != undefined)
+            if (terrainLocs[enemies[e].position] != undefined && enemies[e].stance != "Backpack")
                 terrainLocs[enemies[e].position].occupiedAffiliation = "enemy";
 
         updateProgressBar();
