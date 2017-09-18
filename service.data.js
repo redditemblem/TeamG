@@ -568,6 +568,9 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             calculateCharacterRange(enmy, e);
         }
+
+        //Finish load
+        updateProgressBar();
     }
 
     function calculateCharacterRange(char, index) {
@@ -615,9 +618,6 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             char.atkRange = [];
             char.healRange = [];
         }
-        
-        //Finish load
-        updateProgressBar();
     };
 
     function recurseRange(horzPos, vertPos, range, params, list, trace){
