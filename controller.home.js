@@ -232,9 +232,9 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     $scope.determineGlowColor = function(loc){
 		if($scope.terrainLocs == undefined) return '';
 		var terrainInfo = $scope.terrainLocs[loc];
-		if(terrainInfo.movCount > 0) return 'blue';
-		if(terrainInfo.atkCount > 0) return 'red';
-		if(terrainInfo.healCount > 0) return 'green';
+		if(terrainInfo.movCount > 0) return 'rgba(0, 0, 255, 0.5)';
+		if(terrainInfo.atkCount > 0) return 'rgba(255, 0, 0, 0.5)';
+		if(terrainInfo.healCount > 0) return 'rgba(0, 255, 0, 0.5)';
 		return '';
 	};
 

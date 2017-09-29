@@ -8,23 +8,19 @@
 
 	<!--Draw tile names-->
 	<div ng-repeat="(yIndex,row) in rows" class="absolutePos" ng-style="{top: determineGlowY(yIndex)}">
-		<div class="glowBox"
-			 ng-repeat="(indexX,column) in columns"
-			 title="({{column}}{{row}}) {{terrainLocs[column+row].type}}: {{terrainTypes[terrainLocs[column+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+row].type].heal}}♥"
-			 ng-style="{left: determineGlowX(indexX)}">
-			 <div style="width: 100%; height: 100%; opacity: 0.5;" ng-style="{'background-color': determineGlowColor(column+row)}"></div>
+		<div class="glowBox" ng-repeat="(indexX,column) in columns" title="({{column}}{{row}}) {{terrainLocs[column+row].type}}: {{terrainTypes[terrainLocs[column+row].type].avo}}🚶  {{terrainTypes[terrainLocs[column+row].type].def}}⛨ {{terrainTypes[terrainLocs[column+row].type].heal}}♥"
+		    ng-style="{left: determineGlowX(indexX)}">
+
+			<!-- After Chrome 61, background-color tag is broken-->
+			<!-- We're remedying this with our own background-color-->
+			<div style="width: 100%; height: 100%;" ng-style="{'background-color': determineGlowColor(column+row)}"></div>
 		</div>
 	</div>
 
 	<!--Draw characters-->
 	<div ng-repeat="(cIndex,char) in charaData">
-		<div id="{{cIndex}}"
-			 ng-if="validPosition(char.position, char.stance)"
-			 ng-click="displayData(cIndex)" 
-			 class="absolutePos charDiv hoverImage" 
-			 title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
-			 ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}"
-		>
+		<div id="{{cIndex}}" ng-if="validPosition(char.position, char.stance)" ng-click="displayData(cIndex)" class="absolutePos charDiv hoverImage" title="({{char.position}}) {{terrainLocs[char.position].type}}: {{terrainTypes[terrainLocs[char.position].type].avo}}🚶  {{terrainTypes[terrainLocs[char.position].type].def}}⛨ {{terrainTypes[terrainLocs[char.position].type].heal}}♥"
+		    ng-style="{top: determineCharY(char.position), left: determineCharX(char.position)}">
 			<!--Paired unit sprite-->
 			<div ng-if="isPaired(char.partner, char.stance)" class="charDiv mapCharOffsetLeft">
 				<img ng-src="{{getPairUnitIcon(char.partner, 0)}}" class="mapCharCentered dimImage">
@@ -42,13 +38,8 @@
 
 	<!--Draw enemies-->
 	<div ng-repeat="(eIndex,enemy) in enemyData">
-		<div id="{{eIndex}}"
-			 ng-if="validPosition(enemy.position, enemy.stance)"
-			 ng-click="displayData(eIndex)" 
-			 class="absolutePos charDiv hoverImage" 
-			 title="({{enemy.position}}) {{terrainLocs[enemy.position].type}}: {{terrainTypes[terrainLocs[enemy.position].type].avo}}🚶  {{terrainTypes[terrainLocs[enemy.position].type].def}}⛨ {{terrainTypes[terrainLocs[enemy.position].type].heal}}♥"
-			 ng-style="{top: determineCharY(enemy.position), left: determineCharX(enemy.position)}"
-		>
+		<div id="{{eIndex}}" ng-if="validPosition(enemy.position, enemy.stance)" ng-click="displayData(eIndex)" class="absolutePos charDiv hoverImage" title="({{enemy.position}}) {{terrainLocs[enemy.position].type}}: {{terrainTypes[terrainLocs[enemy.position].type].avo}}🚶  {{terrainTypes[terrainLocs[enemy.position].type].def}}⛨ {{terrainTypes[terrainLocs[enemy.position].type].heal}}♥"
+		    ng-style="{top: determineCharY(enemy.position), left: determineCharX(enemy.position)}">
 			<div ng-if="isPaired(enemy.partner, enemy.stance)" class="charDiv mapCharOffsetLeft">
 				<img ng-src="{{getPairUnitIcon(enemy.partner, 1)}}" class="mapCharCentered dimImage">
 			</div>
