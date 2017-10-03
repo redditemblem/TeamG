@@ -302,14 +302,6 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'DefPair': parseInt(c[16]) | 0,
                 'ResPair': parseInt(c[17]) | 0,
                 'MovPair': parseInt(c[18]) | 0,
-                'StrBase': parseInt(c[20]) | 0,
-                'MagBase': parseInt(c[21]) | 0,
-                'SklBase': parseInt(c[22]) | 0,
-                'SpdBase': parseInt(c[23]) | 0,
-                'LckBase': parseInt(c[24]) | 0,
-                'DefBase': parseInt(c[25]) | 0,
-                'ResBase': parseInt(c[26]) | 0,
-                'MovBase': parseInt(c[27]) | 0,
                 'weaknesses': c[28].length > 0 && c[28] != "-" ? c[28].split(",") : [],
                 'atk': parseInt(c[29]) | 0,
                 'hit': parseInt(c[30]) | 0,
@@ -353,6 +345,16 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                     }
                 },
             };
+
+            //Set Base values
+            currObj.StrBase = (parseInt(c[20]) | 0) - currObj.StrBuff;
+            currObj.MagBase = (parseInt(c[21]) | 0) - currObj.MagBuff;
+            currObj.SklBase = (parseInt(c[22]) | 0) - currObj.SklBuff;
+            currObj.SpdBase = (parseInt(c[23]) | 0) - currObj.SpdBuff;
+            currObj.LckBase = (parseInt(c[24]) | 0) - currObj.LuckBuff;
+            currObj.DefBase = (parseInt(c[25]) | 0) - currObj.DefBuff;
+            currObj.ResBase = (parseInt(c[26]) | 0) - currObj.ResBuff;
+            currObj.MovBase = (parseInt(c[27]) | 0) - currObj.MovBuff;
 
             //Find and append weapons
             var itemArray = c.slice(36, 41);

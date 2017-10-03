@@ -343,14 +343,14 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
 
     function calcFinalStat(char, stat) {
         var pair = char[stat + "Pair"];
-        var buff = char[stat + "Buff"];
+        //var buff = char[stat + "Buff"];
         var weapon = 0;
 
         if (char.inventory.itm0.name.indexOf("(E)") != -1) weapon += char.inventory.itm0[stat + "Eqpt"]; //equipped weapon buff/debuff
         for (var w in char.inventory)
             weapon += char.inventory[w][stat + "Inv"]; //inventory buff/debuffs
 
-        return pair + buff + weapon;
+        return pair + weapon;
     };
 
     $scope.validSkill = function(skill) {
