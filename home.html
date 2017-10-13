@@ -27,7 +27,7 @@
 			</div>
 			<!--Unit sprite-->
 			<div class="charDiv" ng-class="isPaired(char.partner, char.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered">
+				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : char.unitType.indexOf('Aura1') != -1, 'charAura2' : char.unitType.indexOf('Aura2') != -1}">
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="char.currHp > char.maxHp ? 'purpleHp' : 'blueHp'" ng-style="{width: calculateHPWidth(char.currHp, char.maxHp)+'px'}"></div>
 				<div class="healthBarBorder"></div>
@@ -45,7 +45,7 @@
 				<img class="leftEnemyNum" ng-src="{{getPairUnitNum(enemy.name)}}" />
 			</div>
 			<div class="charDiv" ng-class="isPaired(enemy.partner, enemy.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered">
+				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : enemy.unitType.indexOf('Aura1') != -1, 'charAura2' : enemy.unitType.indexOf('Aura2') != -1}">
 				<img class="enemyNum" ng-src="{{getEnemyNum(enemy.name)}}" />
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="enemy.currHp > enemy.maxHp ? 'purpleHp' : 'redHp'" ng-style="{width:calculateHPWidth(enemy.currHp, enemy.maxHp)+'px'}"></div>
