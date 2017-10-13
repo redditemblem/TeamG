@@ -51,8 +51,8 @@
 				<div class="healthBarFront" ng-class="enemy.currHp > enemy.maxHp ? 'purpleHp' : 'redHp'" ng-style="{width:calculateHPWidth(enemy.currHp, enemy.maxHp)+'px'}"></div>
 				<div class="healthBarBorder"></div>
 				<div ng-if="isPaired(enemy.partner, enemy.stance)" class="pairUpIcon"><img src="IMG/shield_pairup.png"></div>
-				<div ng-if="enemy.unitType.indexOf('boss') != -1" class="pairUpIcon"><img src="IMG/shield_boss.png"></div>
-				<div ng-if="enemy.unitType.indexOf('talk') != -1" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>
+				<div ng-if="enemy.unitType.indexOf('Boss') != -1" class="pairUpIcon"><img src="IMG/shield_boss.png"></div>
+				<div ng-if="enemy.unitType.indexOf('Talk') != -1" class="enemyTalkBalloon"><img src="IMG/talk.gif"></div>
 			</div>
 		</div>
 	</div>
