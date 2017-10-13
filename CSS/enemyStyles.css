@@ -75,6 +75,13 @@
 	bottom: 4px;
 }
 
+.leftEnemyNum{
+	position: absolute;
+	display: block;
+	left: -4px;
+	bottom: 4px;
+}
+
 .enemyTalkBalloon{
 	position: absolute;
 	top: -16px;

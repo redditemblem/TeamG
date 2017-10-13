@@ -107,6 +107,24 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return pairedUnit.spriteUrl;
     };
 
+    $scope.getPairUnitNum = function(pair){
+        var size = Object.keys($scope.enemyData).length;
+        var found = false;
+        var inc = 0;
+
+        //Find paired unit
+        var pairedUnit = null;
+        while (!found && inc < size) {
+            if ($scope.enemyData["enmy_" + inc].partner == pair) {
+                pairedUnit = $scope.enemyData["enmy_" + inc];
+                found = true;
+            } else inc++;
+        }
+
+        if(pairedUnit != null) return $scope.getEnemyNum(pairedUnit.name);
+        else return "";
+    };
+
     //Switches char info box to show the stats of the paired unit
     //Triggered when char info box "Switch to Paired Unit" button is clicked
     $scope.findPairUpChar = function(char, toggle) {
