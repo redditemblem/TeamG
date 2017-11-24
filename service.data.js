@@ -431,8 +431,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                     }
                 },
                 'skills': {},
-                'partner': e[55],
-                'stance': e[56],
+                'partner': e[55] != undefined ? e[55] : "",
+                'stance': e[56] != undefined ? e[56] : "",
                 'shields': parseInt(e[57]) | 0,
                 'hpBuff': parseInt(e[59]) | 0,
                 'StrBuff': parseInt(e[60]) | 0,
