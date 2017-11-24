@@ -270,11 +270,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         x = parseInt(x.substring(0, x.length - 2));
         y = parseInt(y.substring(0, y.length - 2));
 
-        if (x < 671) x += 40;
-        else x -= 671;
-
-        if (y < 77) y += 40;
-        else y -= 77;
+        x += (gridWidth + boxWidth) * 5;
+        if(y <= 20) y = 20;
 
         box.style.left = x + 'px';
         box.style.top = y + 'px';
@@ -540,20 +537,16 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         var test = document.getElementById('char_0_box');
         if ($scope.charaData != undefined && test != null) {
 
-            var i = 0;
             //Set event listeners to be activated when the div is dragged
             for (var char in $scope.charaData) {
-                var box = document.getElementById('char_' + i + '_box');
+                var box = document.getElementById(char + '_box');
                 box.addEventListener('dragstart', dragStart, false);
-                i++;
             }
-            i = 0;
 
             //Set event listeners to be activated when the div is dragged
             for (var enemy in $scope.enemyData) {
-                var box = document.getElementById('enmy_' + i + '_box');
+                var box = document.getElementById(enemy + '_box');
                 box.addEventListener('dragstart', dragStart, false);
-                i++;
             }
 
             //Set event listeners

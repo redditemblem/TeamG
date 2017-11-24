@@ -49,7 +49,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "COLUMNS",
-            range: 'Stats!B2:AZ',
+            range: 'Stats!B2:ZZ',
         }).then(function(response) {
             characterData = response.result.values;
             updateProgressBar();
@@ -63,7 +63,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             majorDimension: "ROWS",
             valueRenderOption: "FORMULA",
             // Obtain all images from all columns at row 5
-            range: 'Stats!B5:AZ5',
+            range: 'Stats!B5:ZZ5',
         }).then(function(response) {
             var images = response.result.values[0];
 
@@ -80,7 +80,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "COLUMNS",
-            range: 'Enemy Stats!B1:BZ',
+            range: 'Enemy Stats!B1:ZZ',
         }).then(function(response) {
             enemyData = response.result.values;
             updateProgressBar();
@@ -93,7 +93,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             spreadsheetId: sheetId,
             majorDimension: "ROWS",
             valueRenderOption: "FORMULA",
-            range: 'Enemy Stats!B4:AZ4',
+            range: 'Enemy Stats!B4:ZZ4',
         }).then(function(response) {
             var images = response.result.values[0];
 
