@@ -270,7 +270,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         x = parseInt(x.substring(0, x.length - 2));
         y = parseInt(y.substring(0, y.length - 2));
 
-        x += (gridWidth + boxWidth) * 5;
+        x = Math.min(x + ((gridWidth + boxWidth)*5), (gridWidth + boxWidth) * ($scope.columns.length + 3));
         if(y <= 20) y = 20;
 
         box.style.left = x + 'px';
