@@ -351,7 +351,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             currObj.MagBase = (parseInt(c[21]) | 0) - currObj.MagBuff;
             currObj.SklBase = (parseInt(c[22]) | 0) - currObj.SklBuff;
             currObj.SpdBase = (parseInt(c[23]) | 0) - currObj.SpdBuff;
-            currObj.LckBase = (parseInt(c[24]) | 0) - currObj.LuckBuff;
+            currObj.LckBase = (parseInt(c[24]) | 0) - currObj.LckBuff;
             currObj.DefBase = (parseInt(c[25]) | 0) - currObj.DefBuff;
             currObj.ResBase = (parseInt(c[26]) | 0) - currObj.ResBuff;
             currObj.MovBase = (parseInt(c[27]) | 0) - currObj.MovBuff;
@@ -614,7 +614,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             };
 
             recurseRange(horz, vert, range, params, list, "_");
-            
+
             list.forEach(function(e){
                 horz = cols.indexOf(e.match(/[a-zA-Z]+/g)[0]);
                 vert = rows.indexOf(e.match(/[0-9]+/g)[0]);
@@ -672,7 +672,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 		if(vertPos < rows.length-1 && trace.indexOf("_"+cols[horzPos]+rows[vertPos+1]+"_") == -1)
 			recurseRange(horzPos, vertPos+1, range, params, list, trace);
     };
-    
+
     function recurseItemRange(horzPos, vertPos, range, list, itemList, trace){
 		if(trace.length > 1){
 			var coord = cols[horzPos]+rows[vertPos];
