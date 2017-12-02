@@ -121,7 +121,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
                 classIndex[c[0]] = {
                     'name': c[0],
-                    'terrainType' : c[42],
+                    'terrainType': c[42],
                     'StrPair': parseInt(c[44]) | 0,
                     'MagPair': parseInt(c[45]) | 0,
                     'SklPair': parseInt(c[46]) | 0,
@@ -495,7 +495,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         var height = map.naturalHeight; //calculate the height of the map
         height = (height / (boxWidth + gridWidth)) - 2;
         for (var i = 0; i < height; i++)
-            rows.push((i+1)+"");
+            rows.push((i + 1) + "");
 
         var width = map.naturalWidth; //calculate the width of the map
         width = (width / (boxWidth + gridWidth)) - 2;
@@ -542,14 +542,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         }
     };
 
-    function runRangeCalculations(){
+    function runRangeCalculations() {
         for (var c in characters) {
             var char = characters[c];
 
-            if(char.stance == "Backpack"){
+            if (char.stance == "Backpack") {
                 var pos = "";
-                for(var i in characters)
-                    if(characters[i].name == char.partner)
+                for (var i in characters)
+                    if (characters[i].name == char.partner)
                         pos = characters[i].position;
                 char.position = pos;
             }
@@ -560,10 +560,10 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         for (var e in enemies) {
             var enmy = enemies[e];
 
-            if(enmy.stance == "Backpack"){
+            if (enmy.stance == "Backpack") {
                 var pos = "";
-                for(var i in enemies)
-                    if(enemies[i].name == enmy.partner)
+                for (var i in enemies)
+                    if (enemies[i].name == enmy.partner)
                         pos = enemies[i].position;
                 enmy.position = pos;
             }
@@ -596,26 +596,30 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
             var hasPass = false;
             var hasSeaLegs = false;
-            for(var s in char.skills){
+            for (var s in char.skills) {
                 var skl = char.skills[s];
-                switch(skl.name){
-                    case "Pass" : hasPass = true; break;
-                    case "Sea Legs" : hasSeaLegs = true; break;
+                switch (skl.name) {
+                    case "Pass":
+                        hasPass = true;
+                        break;
+                    case "Sea Legs":
+                        hasSeaLegs = true;
+                        break;
                 }
             }
 
             var params = {
-                'atkRange' : maxAtkRange,
-                'healRange' : maxHealRange,
-                'terrainClass' : char.class.terrainType,
-                'affiliation' : index.indexOf("char_") > -1 ? "char" : "enemy",
-                'hasPass' : hasPass,
-                'hasSeaLegs' : hasSeaLegs
+                'atkRange': maxAtkRange,
+                'healRange': maxHealRange,
+                'terrainClass': char.class.terrainType,
+                'affiliation': index.indexOf("char_") > -1 ? "char" : "enemy",
+                'hasPass': hasPass,
+                'hasSeaLegs': hasSeaLegs
             };
 
             recurseRange(horz, vert, range, params, list, "_");
 
-            list.forEach(function(e){
+            list.forEach(function(e) {
                 horz = cols.indexOf(e.match(/[a-zA-Z]+/g)[0]);
                 vert = rows.indexOf(e.match(/[0-9]+/g)[0]);
 
@@ -633,75 +637,74 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         }
     };
 
-    function recurseRange(horzPos, vertPos, range, params, list, trace){
-		//Don't calculate cost for starting tile
-		var coord = cols[horzPos]+rows[vertPos];
-		var tile = terrainLocs[coord];
+    function recurseRange(horzPos, vertPos, range, params, list, trace) {
+        //Don't calculate cost for starting tile
+        var coord = cols[horzPos] + rows[vertPos];
+        var tile = terrainLocs[coord];
 
-		//Mov mode calcs
-		if(trace.length > 1){
-			var classCost = terrainIndex[tile.type][params.terrainClass];
+        //Mov mode calcs
+        if (trace.length > 1) {
+            var classCost = terrainIndex[tile.type][params.terrainClass];
 
             //Determine traversal cost
-            if(params.hasSeaLegs && (tile.type == "Sea" || tile.type == "Lake" || tile.type == "Big Puddle") && range >= 2) range -= 2;
-			else if( classCost == undefined
-			   || classCost == "-"
-			   || (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation && !params.hasPass)
-			   || (parseFloat(classCost) > range)
-			){
-				return;
-            }
-			else range -= parseFloat(classCost);
-		}
+            if (params.hasSeaLegs && (tile.type == "Sea" || tile.type == "Lake" || tile.type == "Big Puddle") && range >= 2) range -= 2;
+            else if (classCost == undefined ||
+                classCost == "-" ||
+                (tile.occupiedAffiliation.length > 0 && tile.occupiedAffiliation != params.affiliation && !params.hasPass) ||
+                (parseFloat(classCost) > range)
+            ) {
+                return;
+            } else range -= parseFloat(classCost);
+        }
 
-		if(list.indexOf(coord) == -1) list.push(coord);
-		trace += coord + "_";
+        if (list.indexOf(coord) == -1) list.push(coord);
+        trace += coord + "_";
 
-		if(range <= 0) //base case
-			return;
+        if (range <= 0) //base case
+            return;
 
-		if(horzPos > 0 && trace.indexOf("_"+cols[horzPos-1]+rows[vertPos]+"_") == -1)
-			recurseRange(horzPos-1, vertPos, range, params, list, trace);
+        if (horzPos > 0 && trace.indexOf("_" + cols[horzPos - 1] + rows[vertPos] + "_") == -1)
+            recurseRange(horzPos - 1, vertPos, range, params, list, trace);
 
-		if(horzPos < cols.length-1 && trace.indexOf("_"+cols[horzPos+1]+rows[vertPos]+"_") == -1)
-			recurseRange(horzPos+1, vertPos, range, params, list, trace);
+        if (horzPos < cols.length - 1 && trace.indexOf("_" + cols[horzPos + 1] + rows[vertPos] + "_") == -1)
+            recurseRange(horzPos + 1, vertPos, range, params, list, trace);
 
-		if(vertPos > 0 && trace.indexOf("_"+cols[horzPos]+rows[vertPos-1]+"_") == -1)
-			recurseRange(horzPos, vertPos-1, range, params, list, trace);
+        if (vertPos > 0 && trace.indexOf("_" + cols[horzPos] + rows[vertPos - 1] + "_") == -1)
+            recurseRange(horzPos, vertPos - 1, range, params, list, trace);
 
-		if(vertPos < rows.length-1 && trace.indexOf("_"+cols[horzPos]+rows[vertPos+1]+"_") == -1)
-			recurseRange(horzPos, vertPos+1, range, params, list, trace);
+        if (vertPos < rows.length - 1 && trace.indexOf("_" + cols[horzPos] + rows[vertPos + 1] + "_") == -1)
+            recurseRange(horzPos, vertPos + 1, range, params, list, trace);
     };
 
-    function recurseItemRange(horzPos, vertPos, range, list, itemList, trace){
-		if(trace.length > 1){
-			var coord = cols[horzPos]+rows[vertPos];
-			var tile = terrainLocs[coord];
+    function recurseItemRange(horzPos, vertPos, range, list, itemList, trace) {
+        if (trace.length > 1) {
+            var coord = cols[horzPos] + rows[vertPos];
+            var tile = terrainLocs[coord];
 
-			var classCost = terrainIndex[terrainLocs[coord].type].Flier;
-			if(classCost == undefined || classCost == "-") return;
-			else range -= 1;
+            var classCost = terrainIndex[terrainLocs[coord].type].Flier;
+            if (classCost == undefined || classCost == "-") return;
+            else range -= 1;
 
-			if(itemList.indexOf(coord) == -1) itemList.push(coord);
-		}
+            if (itemList.indexOf(coord) == -1) itemList.push(coord);
+        }
 
-		trace += coord + "_";
+        trace += coord + "_";
 
-		if(range <= 0) //base case
-			return;
+        if (range <= 0) //base case
+            return;
 
-		if(horzPos > 0 && trace.indexOf("_"+cols[horzPos-1]+rows[vertPos]+"_") == -1 && list.indexOf(cols[horzPos-1]+rows[vertPos]) == -1)
-			recurseItemRange(horzPos-1, vertPos, range, list, itemList, trace);
+        if (horzPos > 0 && trace.indexOf("_" + cols[horzPos - 1] + rows[vertPos] + "_") == -1 && list.indexOf(cols[horzPos - 1] + rows[vertPos]) == -1)
+            recurseItemRange(horzPos - 1, vertPos, range, list, itemList, trace);
 
-		if(horzPos < cols.length-1 && trace.indexOf("_"+cols[horzPos+1]+rows[vertPos]+"_") == -1 && list.indexOf(cols[horzPos+1]+rows[vertPos]) == -1)
-			recurseItemRange(horzPos+1, vertPos, range, list, itemList, trace);
+        if (horzPos < cols.length - 1 && trace.indexOf("_" + cols[horzPos + 1] + rows[vertPos] + "_") == -1 && list.indexOf(cols[horzPos + 1] + rows[vertPos]) == -1)
+            recurseItemRange(horzPos + 1, vertPos, range, list, itemList, trace);
 
-		if(vertPos > 0 && trace.indexOf("_"+cols[horzPos]+rows[vertPos-1]+"_") == -1 && list.indexOf(cols[horzPos]+rows[vertPos-1]) == -1)
-			recurseItemRange(horzPos, vertPos-1, range, list, itemList, trace)
+        if (vertPos > 0 && trace.indexOf("_" + cols[horzPos] + rows[vertPos - 1] + "_") == -1 && list.indexOf(cols[horzPos] + rows[vertPos - 1]) == -1)
+            recurseItemRange(horzPos, vertPos - 1, range, list, itemList, trace)
 
-		if(vertPos < rows.length-1 && trace.indexOf("_"+cols[horzPos]+rows[vertPos+1]+"_") == -1 && list.indexOf(cols[horzPos]+rows[vertPos+1]) == -1)
-			recurseItemRange(horzPos, vertPos+1, range, list, itemList, trace)
-	}
+        if (vertPos < rows.length - 1 && trace.indexOf("_" + cols[horzPos] + rows[vertPos + 1] + "_") == -1 && list.indexOf(cols[horzPos] + rows[vertPos + 1]) == -1)
+            recurseItemRange(horzPos, vertPos + 1, range, list, itemList, trace)
+    }
 
     function formatItemRange(range) {
         if (range.indexOf("~") != -1 && range.length > 1)
@@ -711,7 +714,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     };
 
     function isAttackingItem(wpnClass, critDmg) {
-        if(wpnClass == "Staff")
+        if (wpnClass == "Staff")
             return critDmg != 0;
         else return wpnClass != "Item" && wpnClass != "Trophy" && wpnClass != "Mystery";
     };
@@ -756,8 +759,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'name': name != undefined ? name : "",
                 'type': "Mystery",
                 'effective': "",
-                'critDmg' : 0,
-                'range' : "0",
+                'critDmg': 0,
+                'range': "0",
                 'StrInv': 0,
                 'MagInv': 0,
                 'SklInv': 0,
@@ -788,7 +791,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
         if (name == undefined || name.length == 0 || classIndex[name] == undefined)
             return {
                 'name': name != undefined ? name : "",
-                'terrainType' : "",
+                'terrainType': "",
                 'StrPair': 0,
                 'MagPair': 0,
                 'SklPair': 0,

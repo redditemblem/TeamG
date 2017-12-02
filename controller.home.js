@@ -12,7 +12,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "72px", "45px"],
         ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.", "96px", "60px"],
         ["Def", "Defense. Reduces damage from physical attacks.", "106px", "76px"],
-        ["Res", "Resistance. Reduces damage from physical attacks.", "109px", "94px"]
+        ["Res", "Resistance. Reduces damage from magical attacks.", "109px", "94px"]
     ];
 
     //Interval timers
@@ -56,8 +56,12 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         $location.path('/');
     };
 
-    $scope.launchConvoyDialog = function() { $scope.showConvoy = true; };
-	$scope.launchShopDialog = function(){ $scope.showShop = true; };
+    $scope.launchConvoyDialog = function() {
+        $scope.showConvoy = true;
+    };
+    $scope.launchShopDialog = function() {
+        $scope.showShop = true;
+    };
 
     //Returns the vertical position of a glowBox element
     $scope.determineGlowY = function(index) {
@@ -107,7 +111,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         return pairedUnit.spriteUrl;
     };
 
-    $scope.getPairUnitNum = function(pair){
+    $scope.getPairUnitNum = function(pair) {
         var size = Object.keys($scope.enemyData).length;
         var found = false;
         var inc = 0;
@@ -121,7 +125,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
             } else inc++;
         }
 
-        if(pairedUnit != null) return $scope.getEnemyNum(pairedUnit.name);
+        if (pairedUnit != null) return $scope.getEnemyNum(pairedUnit.name);
         else return "";
     };
 
@@ -230,31 +234,31 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
             return letter.charCodeAt(0) - 38; //double letter
     };
 
-    function toggleCharRange(char, val){
+    function toggleCharRange(char, val) {
         var unit = undefined;
-        if(char.indexOf("char") != -1) unit = $scope.charaData[char];
+        if (char.indexOf("char") != -1) unit = $scope.charaData[char];
         else unit = $scope.enemyData[char];
 
-		var movRangeList = unit.range;
-		var atkRangeList = unit.atkRange;
-		var healRangeList = unit.healRange;
+        var movRangeList = unit.range;
+        var atkRangeList = unit.atkRange;
+        var healRangeList = unit.healRange;
 
-		for(var i = 0; i < movRangeList.length; i++)
-			$scope.terrainLocs[movRangeList[i]].movCount += val;
-		for(var j = 0; j < atkRangeList.length; j++)
-			$scope.terrainLocs[atkRangeList[j]].atkCount += val;
-		for(var k = 0; k < healRangeList.length; k++)
-			$scope.terrainLocs[healRangeList[k]].healCount += val;
-	};
+        for (var i = 0; i < movRangeList.length; i++)
+            $scope.terrainLocs[movRangeList[i]].movCount += val;
+        for (var j = 0; j < atkRangeList.length; j++)
+            $scope.terrainLocs[atkRangeList[j]].atkCount += val;
+        for (var k = 0; k < healRangeList.length; k++)
+            $scope.terrainLocs[healRangeList[k]].healCount += val;
+    };
 
-    $scope.determineGlowColor = function(loc){
-		if($scope.terrainLocs == undefined) return '';
-		var terrainInfo = $scope.terrainLocs[loc];
-		if(terrainInfo.movCount > 0) return 'rgba(0, 0, 255, 0.5)';
-		if(terrainInfo.atkCount > 0) return 'rgba(255, 0, 0, 0.5)';
-		if(terrainInfo.healCount > 0) return 'rgba(0, 255, 0, 0.5)';
-		return '';
-	};
+    $scope.determineGlowColor = function(loc) {
+        if ($scope.terrainLocs == undefined) return '';
+        var terrainInfo = $scope.terrainLocs[loc];
+        if (terrainInfo.movCount > 0) return 'rgba(0, 0, 255, 0.5)';
+        if (terrainInfo.atkCount > 0) return 'rgba(255, 0, 0, 0.5)';
+        if (terrainInfo.healCount > 0) return 'rgba(0, 255, 0, 0.5)';
+        return '';
+    };
 
     //***********************\\
     // POSITION CALCULATIONS \\
@@ -270,8 +274,8 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
         x = parseInt(x.substring(0, x.length - 2));
         y = parseInt(y.substring(0, y.length - 2));
 
-        x = Math.min(x + ((gridWidth + boxWidth)*5), (gridWidth + boxWidth) * ($scope.columns.length + 3));
-        if(y <= 20) y = 20;
+        x = Math.min(x + ((gridWidth + boxWidth) * 5), (gridWidth + boxWidth) * ($scope.columns.length + 3));
+        if (y <= 20) y = 20;
 
         box.style.left = x + 'px';
         box.style.top = y + 'px';
@@ -320,7 +324,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     // PROCESSING/FORMATTING \\
     //***********************\\
 
-    $scope.fetchCharPortrait = function(name){
+    $scope.fetchCharPortrait = function(name) {
         return `url('IMG/PORT/${name}.png')`;
     };
 
@@ -414,7 +418,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //Checks if the passed "type" is listed in the effectiveness column of a character's weapon
     //(Ex. Flying, Monster, Beast, Dragon, Armor)
     $scope.weaponEffective = function(types, goal) {
-        if(types == undefined) return false;
+        if (types == undefined) return false;
         types = types.toLowerCase();
         return types.indexOf(goal) != -1;
     };

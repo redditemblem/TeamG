@@ -31,7 +31,7 @@ app.service('ConvoyDataService', ['$rootScope', function($rootScope) {
                     'avo': c[9],
                     'cEva': c[10],
                     'range': c[11],
-                    'rangeVal': parseInt(c[11].substring(c[11].lastIndexOf("~")+1).trim()) | 0,
+                    'rangeVal': parseInt(c[11].substring(c[11].lastIndexOf("~") + 1).trim()) | 0,
                     'desc': c[12] != undefined ? c[12] : ""
                 })
             }
