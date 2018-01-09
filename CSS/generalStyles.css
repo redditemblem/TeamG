@@ -219,15 +219,15 @@ img{
 }
 
 .charAura3{
-	-webkit-filter: drop-shadow(3px 3px 0 rgba(255, 153, 0, 0.5))
-					drop-shadow(-3px 3px 0 rgba(255, 153, 0, 0.5))
-					drop-shadow(3px -3px 0 rgba(255, 153, 0, 0.5))
-		  			drop-shadow(-3px -2px 0 rgba(255, 153, 0, 0.5));
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(182, 82, 0, 0.5))
+					drop-shadow(-3px 3px 0 rgba(182, 82, 0, 0.5))
+					drop-shadow(3px -3px 0 rgba(182, 82, 0, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(182, 82, 0, 0.5));
 
-	filter: drop-shadow(3px 3px 0 rgba(255, 153, 0, 0.5))
-			drop-shadow(-3px 3px 0 rgba(255, 153, 0, 0.5))
-			drop-shadow(3px -3px 0 rgba(255, 153, 0, 0.5))
-		    drop-shadow(-3px -3px 0 rgba(255, 153, 0, 0.5));
+	filter: drop-shadow(3px 3px 0 rgba(182, 82, 0, 0.5))
+			drop-shadow(-3px 3px 0 rgba(182, 82, 0, 0.5))
+			drop-shadow(3px -3px 0 rgba(182, 82, 0, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(182, 82, 0, 0.5));
 }
 
 .centerText{ text-align: center; }
