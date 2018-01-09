@@ -27,7 +27,7 @@
 			</div>
 			<!--Unit sprite-->
 			<div class="charDiv" ng-class="isPaired(char.partner, char.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : char.unitType.indexOf('Aura1') != -1, 'charAura2' : char.unitType.indexOf('Aura2') != -1}">
+				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : char.unitType.indexOf('Aura1') != -1, 'charAura2' : char.unitType.indexOf('Aura2') != -1, 'charAura3' : char.unitType.indexOf('Aura3') != -1}">
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="char.currHp > char.maxHp ? 'purpleHp' : 'blueHp'" ng-style="{width: calculateHPWidth(char.currHp, char.maxHp)+'px'}"></div>
 				<div class="healthBarBorder"></div>

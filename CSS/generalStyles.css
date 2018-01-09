@@ -218,6 +218,18 @@ img{
 		    drop-shadow(-3px -3px 0 rgba(255, 238, 0, 0.5));
 }
 
+.charAura3{
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(0, 101, 15, 0.5))
+					drop-shadow(-3px 3px 0 rgba(0, 101, 0, 0.5))
+					drop-shadow(3px -3px 0 rgba(0, 101, 0, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(0, 101, 0, 0.5));
+
+	filter: drop-shadow(3px 3px 0 rgba(0, 101, 0, 0.5))
+			drop-shadow(-3px 3px 0 rgba(0, 101, 0, 0.5))
+			drop-shadow(3px -3px 0 rgba(0, 101, 0, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(0, 101, 0, 0.5));
+}
+
 .centerText{ text-align: center; }
 .rightText{ text-align: right; }
 .whiteText{ color: white; }
