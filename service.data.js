@@ -251,8 +251,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                     'Beast': r[5],
                     'Mage': r[6],
                     'Mount (T1)': r[7],
-                    'Mount (T2)': r[8],
-                    'Flier': r[9],
+                    'Flier': r[8],
+                    'canAttack' : r[9] == "On" ? true : false,
                     'note': r[10]
                 }
             }
@@ -681,8 +681,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             var coord = cols[horzPos] + rows[vertPos];
             var tile = terrainLocs[coord];
 
-            var classCost = terrainIndex[terrainLocs[coord].type].Flier;
-            if (classCost == undefined || classCost == "-") return;
+            var canAttack = terrainIndex[terrainLocs[coord].type].canAttack;
+            if (canAttack == undefined || canAttack == false) return;
             else range -= 1;
 
             if (itemList.indexOf(coord) == -1) itemList.push(coord);
