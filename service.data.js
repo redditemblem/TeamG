@@ -277,10 +277,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
     function processCharacters() {
         characters = {};
+        var offset = 0;
 
         for (var i = 0; i < characterData.length; i++) {
             var c = characterData[i];
-            if (c[0].length == 0) continue;
+            if (c[0].length == 0){
+                offset++;
+                continue;
+            }
 
             var currObj = {
                 'name': c[0],
@@ -370,7 +374,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             for (var k = 47; k <= 52; k++)
                 currObj.skills["skl" + (k - 46)] = getSkill(c[k]);
 
-            characters["char_" + i] = currObj;
+            characters["char_" + (i - offset)] = currObj;
         }
 
         updateProgressBar();
@@ -379,10 +383,14 @@ app.service('DataService', ['$rootScope', function($rootScope) {
 
     function processEnemies() {
         enemies = {};
+        var offset = 0;
 
         for (var i = 0; i < enemyData.length; i++) {
             var e = enemyData[i];
-            if (e[0].length == 0) continue;
+            if (e[0].length == 0){
+                offset++;
+                continue;
+            }
 
             var currObj = {
                 'name': e[0],
@@ -464,7 +472,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             for (var k = 46; k < 51; k++)
                 currObj.skills["skl" + (k - 45)] = getSkill(e[k]);
 
-            enemies["enmy_" + i] = currObj;
+            enemies["enmy_" + (i - offset)] = currObj;
         }
 
         updateProgressBar();
