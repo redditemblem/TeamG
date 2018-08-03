@@ -463,7 +463,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             var eqptIndex = itemArray.indexOf(e[33]);
             if (eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
                 itemArray.splice(eqptIndex, 1);
-                itemArray.splice(0, 0, e[33]);
+                itemArray.splice(0, 0, e[33] + " (E)");
             }
 
             for (var j = 0; j < itemArray.length; j++)
