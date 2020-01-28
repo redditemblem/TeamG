@@ -285,8 +285,6 @@
 		<div ng-repeat="w in char.weaponRanks" class="infoElement weaponRankPos" ng-style="{left: fetchWpnRankHorzPos($index)}">
 			<span ng-if="existsWeaponRank(w.class, w.rank)" title="{{w.class}} Rank" style="position:relative">
 				<img ng-src="{{weaponIcon(w.class)}}" style="display:inline-block">
-				<div class="weaponRankBackground"></div>
-				<div class="weaponRankBar" ng-style="{width:(w.exp*30)+'px'}"></div>
 				<div class="weaponRankLtrPos redText">{{w.rank}}</div>
 			</span>
 		</div>

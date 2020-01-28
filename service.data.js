@@ -334,18 +334,15 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'weaponRanks': {
                     'w1': {
                         'class': c[83],
-                        'rank': c[84],
-                        'exp': calcExpPercent(c[85])
+                        'rank': c[84]
                     },
                     'w2': {
-                        'class': c[86],
-                        'rank': c[87],
-                        'exp': calcExpPercent(c[88])
+                        'class': c[85],
+                        'rank': c[86]
                     },
                     'w3': {
-                        'class': c[89],
-                        'rank': c[90],
-                        'exp': calcExpPercent(c[91])
+                        'class': c[87],
+                        'rank': c[88],
                     }
                 },
             };
@@ -741,17 +738,6 @@ app.service('DataService', ['$rootScope', function($rootScope) {
     function processImageURL(str) {
         if (str == undefined || str.length == 0) return "";
         else return str.substring(str.indexOf("\"") + 1, str.lastIndexOf("\""));
-    };
-
-    function calcExpPercent(exp) {
-        if (exp.length < 3) return 0;
-
-        var split = exp.split("/");
-        var curr = parseInt(split[0].trim()) | 0;
-        var nextRank = parseInt(split[1].trim()) | 0;
-
-        if (curr == 0 || nextRank == 0) return 0;
-        else return curr / nextRank;
     };
 
     function getItem(name) {
