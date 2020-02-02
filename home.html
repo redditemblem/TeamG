@@ -304,7 +304,7 @@
 		<!--Skills-->
 		<!--ng-mouseover and ng-mouseleave trigger the appearance of the info box for each skill-->
 		<div ng-repeat="s in char.skills" class="infoElement hoverImage skillGemPos" ng-mouseover="skillHoverIn(cIndex, $index)" ng-mouseleave="skillHoverOut(cIndex, $index)" ng-style="{top: fetchSklVerticalPos($index)}">
-			<img ng-src="{{fetchSkillIcon(s.spriteUrl, s.name, $index)}}" />
+			<img ng-src="{{fetchSkillIcon(s.spriteUrl, s.name, $index)}}" style="max-width: 16px; max-height: 16px;" />
 		</div>
 
 		<!--Stat Info Boxes (Modifiers)-->
