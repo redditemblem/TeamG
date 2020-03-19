@@ -24,6 +24,7 @@ app.service('ShopDataService', ['$rootScope', function($rootScope) {
                     'stock': c[1] == "∞" ? 99 : (parseInt(c[1]) | 0),
                     'cost': parseInt(c[2]) | 0,
                     'type': c[3],
+                    'stat': c[4],
                     'rank': c[5],
                     'might': parseInt(c[6]) | 0,
                     'hit': parseInt(c[7]) | 0,

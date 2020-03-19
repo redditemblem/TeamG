@@ -16,11 +16,13 @@
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
+                <col width="5%" />
                 <col width="*" />
             </colgroup>
             <tr>
                 <td>Name</td>
                 <td>Type</td>
+                <td>Stat</td>
                 <td>Uses</td>
                 <td>Rank</td>
                 <td>Might</td>
@@ -46,12 +48,14 @@
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
+                <col width="5%" />
                 <col width="*" />
             </colgroup>
             <tbody ng-repeat="item in items | orderBy: getItemSortOrder()" ng-if="displayItemType(item.type)">
                 <tr class="inventoryRow">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
+                    <td style="text-align: center;">{{item.stat}}</td>
                     <td style="text-align: center;">
                         <span ng-if="hasUses(item.type) && item.might > 0">{{item.might}}</span>
                         <span ng-if="!hasUses(item.type)">∞</span>
@@ -120,9 +124,10 @@
 <div style="margin-top: 15px; display: inline-block; height: 50px; width: 340px;">
     <button ng-click="updateSortOrder('name')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'name'}">Name</button>
     <button ng-click="updateSortOrder('type')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'type'}">Type</button>
+    <button ng-click="updateSortOrder('stat')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'stat'}">Stat</button>
     <button ng-click="updateSortOrder('rank')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'rank'}">Rank</button>
-    <button ng-click="updateSortOrder('-might')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-might'}">Might</button>
     <br />
+    <button ng-click="updateSortOrder('-might')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-might'}">Might</button>
     <button ng-click="updateSortOrder('-hit')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-hit'}">Hit</button>
     <button ng-click="updateSortOrder('-crit')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-crit'}">Crit</button>
     <button ng-click="updateSortOrder('-rangeVal')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == '-rangeVal'}">Range</button>

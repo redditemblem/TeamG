@@ -18,11 +18,13 @@
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
+                <col width="5%" />
                 <col width="*" />
             </colgroup>
             <tr>
                 <td>Name</td>
                 <td>Type</td>
+                <td>Stat</td>
                 <td>Stock</td>
                 <td>Cost</td>
                 <td>Uses</td>
@@ -52,12 +54,14 @@
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
+                <col width="5%" />
                 <col width="*" />
             </colgroup>
             <tbody ng-repeat="item in items | orderBy: getItemSortOrder()" ng-if="displayItemType(item.type) && (item.stock > 0 || displayInStock)">
                 <tr class="inventoryRow">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
+                    <td style="text-align: center;">{{item.stat}}</td>
                     <td style="text-align: center;">
                         <span ng-if="item.stock == 99">∞</span>
                         <span ng-if="item.stock != 99">{{item.stock}}</span>

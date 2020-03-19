@@ -22,6 +22,7 @@ app.service('ConvoyDataService', ['$rootScope', function($rootScope) {
                 inventory.push({
                     'name': c[0],
                     'type': c[1],
+                    'stat': c[2],
                     'rank': c[3],
                     'might': parseInt(c[4]) | 0,
                     'hit': parseInt(c[5]) | 0,
