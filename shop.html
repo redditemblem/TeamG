@@ -57,8 +57,8 @@
                 <col width="5%" />
                 <col width="*" />
             </colgroup>
-            <tbody ng-repeat="item in items | orderBy: getItemSortOrder()" ng-if="displayItemType(item.type) && (item.stock > 0 || displayInStock)">
-                <tr class="inventoryRow">
+            <tbody ng-repeat="item in items | orderBy: getItemSortOrder()" ng-if="displayItemType(item.type) && (item.stock > 0 || displayInStock) && (!displayOnlyNew || item.attention)">
+                <tr class="inventoryRow" ng-class="{'itemAttention': item.attention == true}">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
                     <td style="text-align: center;">{{item.stat}}</td>
@@ -128,13 +128,17 @@
 </div>
 <div style="vertical-align: middle; display: inline-block; height: 68px; width: 160px; vertical-align: top;">
     <button class="showChkbx showAllButton" style="position: relative; left: 32px; top: 15px;" ng-click="setAllCheckboxes()">
-                <span ng-if="allChecked()">Deselect All</span>
-                <span ng-if="!allChecked()">Select All</span>
-            </button>
+        <span ng-if="allChecked()">Deselect All</span>
+        <span ng-if="!allChecked()">Select All</span>
+    </button>
     <span class="showChkbx" style="width: 150px !important; position: relative; left: 0px; top: 15px;">
-                <div class="checkbox" ng-click="displayInStock=!displayInStock"><span class="check" ng-if="displayInStock">&#10004;</span></div>
-<span class="checkboxLabel" style="font-size: 9px !important">Show Out-of-Stock Items</span>
-</span>
+        <div class="checkbox" ng-click="displayOnlyNew=!displayOnlyNew"><span class="check" ng-if="displayOnlyNew">&#10004;</span></div>
+        <span class="checkboxLabel" style="font-size: 9px !important">Show Only New</span>
+    </span>
+    <span class="showChkbx" style="width: 150px !important; position: relative; left: 0px; top: 8px;">
+        <div class="checkbox" ng-click="displayInStock=!displayInStock"><span class="check" ng-if="displayInStock">&#10004;</span></div>
+        <span class="checkboxLabel" style="font-size: 9px !important">Show Out-of-Stock</span>
+    </span>
 </div>
 <div style="margin-top: 15px; display: inline-block; height: 50px; width: 340px;">
     <button ng-click="updateSortOrder('name')" class="shopSortButton" ng-class="{'red' : getItemSortOrder() == 'name'}">Name</button>

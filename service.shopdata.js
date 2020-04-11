@@ -10,7 +10,7 @@ app.service('ShopDataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "ROWS",
-            range: 'Shop Things!A2:O',
+            range: 'Shop Things!A2:AE',
         }).then(function(response) {
             var items = response.result.values;
             inventory = [];
@@ -35,7 +35,8 @@ app.service('ShopDataService', ['$rootScope', function($rootScope) {
                     'cEva': c[12],
                     'range': c[13],
                     'rangeVal': parseInt(c[13].substring(c[13].lastIndexOf("~") + 1).trim()) | 0,
-                    'desc': c[14] != undefined ? c[14] : ""
+                    'desc': c[14] != undefined ? c[14] : "",
+                    'attention': c[30] != undefined ? (c[30] == 'Yes') : false
                 })
             }
 
