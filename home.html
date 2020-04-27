@@ -131,9 +131,9 @@
 		</div>
 
 		<!--Inventory-->
-		<div ng-repeat="weapon in enemy.inventory" ng-mouseenter="weaponHoverIn(eIndex, $index)" ng-mouseleave="weaponHoverOut(eIndex, $index)" class="infoElement redText hoverTan enemyInventoryBoxPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchEWeaponVerticalPos($index)}">
+		<div ng-repeat="weapon in enemy.inventory" ng-mouseenter="weaponHoverIn(eIndex, $index)" ng-mouseleave="weaponHoverOut(eIndex, $index)" class="infoElement hoverTan enemyInventoryBoxPos" ng-class="$index == 0 ? 'lightTan' : 'paleTan'" ng-style="{top: fetchEWeaponVerticalPos($index)}">
 			<span class="indentedEWeaponIcon" ng-if="validWeapon(weapon.name)"><img ng-src="{{weapon.spriteUrl}}"/></span>
-			<span class="indentedEnemyItem" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
+			<span class="indentedEnemyItem" ng-class="{'greenText': weapon.droppable == true, 'redText': !weapon.droppable}" ng-if="validWeapon(weapon.name)">{{weapon.name}}</span>
 			<div class="enemyWeaponEffectIcons">
 				<img ng-if="weaponEffective(weapon.effective,'armor')" src="IMG/eff_armor.png">
 				<img ng-if="weaponEffective(weapon.effective,'flying')" src="IMG/eff_flying.png">

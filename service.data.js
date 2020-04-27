@@ -768,7 +768,12 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             }
 
         var copy = Object.assign({}, itemIndex[name]);
+        if(originalName.indexOf("(D)") != -1){
+			copy.droppable = true;
+			originalName = originalName.replace("(D)", "").trim();
+		}
         copy.name = originalName;
+
         return copy;
     };
 
