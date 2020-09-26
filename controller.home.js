@@ -215,7 +215,7 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     //position on the map
     $scope.determineCharX = function(pos) {
         pos = pos.match(/[a-zA-Z]+/g)[0];
-        pos = parseInt(getPosLetterEquivalent(pos));
+        pos = getPosLetterEquivalent(pos);
         return (pos * (boxWidth + gridWidth)) + gridWidth + "px";
     };
 
@@ -228,10 +228,13 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     };
 
     function getPosLetterEquivalent(letter) {
-        if (letter.length == 1)
-            return letter.charCodeAt(0) - 64; //single letter
-        else
-            return letter.charCodeAt(0) - 38; //double letter
+        var index = 0;
+        for(var col in $scope.columns){
+            if($scope.columns[index] == letter)
+                break;
+            index++;
+        }
+        return index+1;
     };
 
     function toggleCharRange(char, val) {
