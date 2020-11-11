@@ -6,25 +6,25 @@ app.controller('HomeCtrl', ['$scope', '$location', '$interval', 'DataService', f
     var refreshListener;
 
     $scope.statsList = [
-        ["Str", "Strength. Affects damage the unit deals with physical attacks.", "5px", "5px"],
-        ["Mag", "Magic. Affects damage the unit deals with magical attacks.", "29px", "14px"],
-        ["Skl", "Skill. Affects hit rate and the frequency of critical hits.", "53px", "38px"],
-        ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "72px", "45px"],
-        ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.", "96px", "60px"],
-        ["Def", "Defense. Reduces damage from physical attacks.", "106px", "76px"],
-        ["Res", "Resistance. Reduces damage from magical attacks.", "109px", "94px"]
+        ["Str", "Strength. Affects damage the unit deals with physical attacks.", "10px", "5px"],
+        ["Mag", "Magic. Affects damage the unit deals with magical attacks.", "42px", "14px"],
+        ["Skl", "Skill. Affects hit rate and the frequency of critical hits.", "74px", "38px"],
+        ["Spd", "Speed. Affects Avo. Unit strikes twice if 5 higher than opponent.", "106px", "45px"],
+        ["Lck", "Luck. Has various effects. Lowers risk of enemy criticals.", "125px", "60px"],
+        ["Def", "Defense. Reduces damage from physical attacks.", "125px", "76px"],
+        ["Res", "Resistance. Reduces damage from magical attacks.", "125px", "94px"]
     ];
 
     //Interval timers
     var dragNDrop = $interval(initializeListeners, 250, 20);
 
     //Positioning constants
-    const statVerticalPos = ["10px", "39px", "68px", "97px", "126px", "155px", "184px"];
-    const weaponVerticalPos = ["10px", "45px", "80px", "115px", "150px"];
-    const weaponRankHorzPos = ["345px", "395px", "445px"];
-    const weaponDescVerticalPos = ["10px", "35px", "60px", "85px", "105px"];
-    const skillVerticalPos = ["7px", "37px", "68px", "97px", "128px", "160px"];
-    const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px", "50px", "57px", "63px"];
+    const statVerticalPos = ["10px", "42px", "74px", "106px", "138px", "170px", "202px"];
+    const weaponVerticalPos = ["10px", "42px", "74px", "106px", "138px", "170px", "202px"];
+    const weaponDescVerticalPos = ["10px", "42px", "74px", "106px", "106px", "106px", "106px"];
+    const weaponRankHorzPos = ["30px", "110px", "190px"];
+    const skillVerticalPos = ["20px", "50px", "80px", "110px", "140px", "170px"];
+    const skillDescVerticalPos = ["5px", "15px", "22px", "29px", "36px", "43px"];
 
     const eSkillHorzPos = ["7px", "47px", "87px", "127px", "167px"];
     const eStatVerticalPos = ["5px", "29px", "53px", "77px", "101px", "125px", "149px"];

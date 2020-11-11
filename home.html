@@ -264,7 +264,7 @@
 
 		<!--Character Stats (Str/Mag/Skl/Etc)-->
 		<div ng-repeat="stat in statsList" class="infoElement darkTan tanText statsPos hoverBrown" ng-mouseover="statHoverIn(cIndex, stat[0])" ng-mouseleave="statHoverOut(cIndex, stat[0])" ng-style="{top: fetchStatVerticalPos($index)}">
-			<span class="indentedStatLabel">{{stat[0]}}</span>
+			<span class="indentedStatLabel2">{{stat[0]}}</span>
 			<span class="indentedStat" ng-style="{color: determineStatColor(cIndex, stat[0], 0)}">{{getStatValue(cIndex, stat[0], 0)}}</span>
 		</div>
 
@@ -292,13 +292,6 @@
 		<!--Pair Up Icon-->
 		<div class="infoElement hoverImage pairUpIcoPos" ng-mouseover="pairUpHoverIn(cIndex)" ng-mouseleave="pairUpHoverOut(cIndex)">
 			<img ng-src="IMG/pairup.png">
-		</div>
-
-		<!--Shields-->
-		<div class="infoElement shieldsPos" title="Dual Guard Shields">
-			<div ng-repeat="val in [1,2,3,4,5,6,7,8,9,10]" style="display: block; float: left">
-				<img ng-src="{{checkShields(val, char.shields)}}">
-			</div>
 		</div>
 
 		<!--Skills-->

@@ -313,36 +313,36 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                 'avo': parseInt(c[32]) | 0,
                 'cEva': parseInt(c[33]) | 0,
                 'inventory': {},
-                'partner': c[42],
-                'stance': c[43],
-                'shields': c[44],
+                'partner': c[44],
+                'stance': c[45],
+                'shields': c[46],
                 'skills': {},
-                'hpBuff': parseInt(c[54]) | 0,
-                'StrBuff': parseInt(c[55]) | 0,
-                'MagBuff': parseInt(c[56]) | 0,
-                'SklBuff': parseInt(c[57]) | 0,
-                'SpdBuff': parseInt(c[58]) | 0,
-                'LckBuff': parseInt(c[59]) | 0,
-                'DefBuff': parseInt(c[60]) | 0,
-                'ResBuff': parseInt(c[61]) | 0,
-                'MovBuff': parseInt(c[62]) | 0,
-                'atkBuff': parseInt(c[63]) | 0,
-                'hitBuff': parseInt(c[64]) | 0,
-                'critBuff': parseInt(c[65]) | 0,
-                'avoBuff': parseInt(c[66]) | 0,
-                'cEvaBuff': parseInt(c[67]) | 0,
+                'hpBuff': parseInt(c[56]) | 0,
+                'StrBuff': parseInt(c[57]) | 0,
+                'MagBuff': parseInt(c[58]) | 0,
+                'SklBuff': parseInt(c[59]) | 0,
+                'SpdBuff': parseInt(c[60]) | 0,
+                'LckBuff': parseInt(c[61]) | 0,
+                'DefBuff': parseInt(c[62]) | 0,
+                'ResBuff': parseInt(c[63]) | 0,
+                'MovBuff': parseInt(c[64]) | 0,
+                'atkBuff': parseInt(c[65]) | 0,
+                'hitBuff': parseInt(c[66]) | 0,
+                'critBuff': parseInt(c[67]) | 0,
+                'avoBuff': parseInt(c[68]) | 0,
+                'cEvaBuff': parseInt(c[69]) | 0,
                 'weaponRanks': {
                     'w1': {
-                        'class': c[83],
-                        'rank': c[84]
-                    },
-                    'w2': {
                         'class': c[85],
                         'rank': c[86]
                     },
-                    'w3': {
+                    'w2': {
                         'class': c[87],
-                        'rank': c[88],
+                        'rank': c[88]
+                    },
+                    'w3': {
+                        'class': c[89],
+                        'rank': c[90],
                     }
                 },
                 'currentCharge': parseInt(c[100]) | 0
@@ -359,7 +359,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             currObj.MovBase = (parseInt(c[27]) | 0) - currObj.MovBuff;
 
             //Find and append weapons
-            var itemArray = c.slice(36, 41);
+            var itemArray = c.slice(36, 43);
             var eqptIndex = itemArray.indexOf(c[35]);
             if (eqptIndex != -1) { //if there is an equipped item, move it to the head of the list
                 itemArray.splice(eqptIndex, 1);
@@ -369,8 +369,8 @@ app.service('DataService', ['$rootScope', function($rootScope) {
             for (var j = 0; j < itemArray.length; j++)
                 currObj.inventory["itm" + j] = getItem(itemArray[j]);
 
-            for (var k = 47; k <= 52; k++)
-                currObj.skills["skl" + (k - 46)] = getSkill(c[k]);
+            for (var k = 49; k <= 54; k++)
+                currObj.skills["skl" + (k - 48)] = getSkill(c[k]);
 
             characters["char_" + (i - offset)] = currObj;
         }
