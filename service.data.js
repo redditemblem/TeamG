@@ -345,7 +345,7 @@ app.service('DataService', ['$rootScope', function($rootScope) {
                         'rank': c[90],
                     }
                 },
-                'currentCharge': parseInt(c[100]) | 0
+                'currentCharge': parseInt(c[102]) | 0
             };
 
             //Set Base values
