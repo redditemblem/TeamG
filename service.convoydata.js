@@ -10,7 +10,7 @@ app.service('ConvoyDataService', ['$rootScope', function($rootScope) {
         gapi.client.sheets.spreadsheets.values.get({
             spreadsheetId: sheetId,
             majorDimension: "ROWS",
-            range: 'Convoy!A2:M',
+            range: 'Convoy!A2:N',
         }).then(function(response) {
             var items = response.result.values;
             inventory = [];
@@ -19,22 +19,27 @@ app.service('ConvoyDataService', ['$rootScope', function($rootScope) {
                 var c = items[i];
                 if (c.length == 0 || c[0].length == 0) continue;
 
-                inventory.push({
+                var temp = {
                     'name': c[0],
-                    'type': c[1],
-                    'stat': c[2],
-                    'rank': c[3],
-                    'might': parseInt(c[4]) | 0,
-                    'hit': parseInt(c[5]) | 0,
-                    'crit': parseInt(c[6]) | 0,
-                    'crit%': parseInt(c[7]) | 0,
-                    'critMod': parseInt(c[8]) | 0,
-                    'avo': c[9],
-                    'cEva': c[10],
-                    'range': c[11],
-                    'rangeVal': parseInt(c[11].substring(c[11].lastIndexOf("~") + 1).trim()) | 0,
-                    'desc': c[12] != undefined ? c[12] : ""
-                })
+                    'owner': c[1],
+                    'type': c[2],
+                    'stat': c[3],
+                    'rank': c[4],
+                    'might': parseInt(c[5]) | 0,
+                    'hit': parseInt(c[6]) | 0,
+                    'crit': parseInt(c[7]) | 0,
+                    'crit%': parseInt(c[8]) | 0,
+                    'critMod': parseInt(c[9]) | 0,
+                    'avo': c[10],
+                    'cEva': c[11],
+                    'range': c[12],
+                    'desc': c[13] != undefined ? c[13] : ""
+                };
+
+                if(temp.range != undefined)
+                    temp.rangeVal = parseInt(temp.range.substring(temp.range.lastIndexOf("~") + 1).trim()) | 0;
+
+                inventory.push(temp);
             }
 
             $rootScope.$broadcast('convoy-load-finished'); //signal end of load

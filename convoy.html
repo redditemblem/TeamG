@@ -8,6 +8,7 @@
             <colgroup>
                 <col width="10%" />
                 <col width="8%" />
+                <col width="8%" />
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
@@ -22,6 +23,7 @@
             <tr>
                 <td>Name</td>
                 <td>Type</td>
+                <td>Owner</td>
                 <td>Stat</td>
                 <td>Uses</td>
                 <td>Rank</td>
@@ -40,6 +42,7 @@
             <colgroup>
                 <col width="10%" />
                 <col width="8%" />
+                <col width="8%" />
                 <col width="5%" />
                 <col width="5%" />
                 <col width="5%" />
@@ -55,6 +58,7 @@
                 <tr class="inventoryRow">
                     <td style="text-align: center;">{{item.name}}</td>
                     <td style="text-align: center;" ng-style="{'background-color' : getRowColor(item.type)}">{{item.type}}</td>
+                    <td style="text-align: center;">{{item.owner}}</td>
                     <td style="text-align: center;">{{item.stat}}</td>
                     <td style="text-align: center;">
                         <span ng-if="hasUses(item.type) && item.might > 0">{{item.might}}</span>
