@@ -228,6 +228,54 @@ img{
 		    drop-shadow(-3px -3px 0 rgba(182, 82, 0, 0.5));
 }
 
+.charAura4{
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(255, 0, 0, 0.5))
+					drop-shadow(-3px 3px 0 rgba(255, 0, 0, 0.5))
+					drop-shadow(3px -3px 0 rgba(255, 0, 0, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(255, 0, 0, 0.5));
+
+	filter: drop-shadow(3px 3px 0 rgba(255, 0, 0, 0.5))
+			drop-shadow(-3px 3px 0 rgba(255, 0, 0, 0.5))
+			drop-shadow(3px -3px 0 rgba(255, 0, 0, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(255, 0, 0, 0.5));
+}
+
+.charAura5{
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(0, 126, 6, 0.5))
+					drop-shadow(-3px 3px 0 rgba(0, 126, 6, 0.5))
+					drop-shadow(3px -3px 0 rgba(0, 126, 6, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(0, 126, 6, 0.5));
+
+	filter: drop-shadow(3px 3px 0 rgba(0, 126, 6, 0.5))
+			drop-shadow(-3px 3px 0 rgba(0, 126, 6, 0.5))
+			drop-shadow(3px -3px 0 rgba(0, 126, 6, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(0, 126, 6, 0.5));
+}
+
+.charAura6{
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(0, 38, 255, 0.5))
+					drop-shadow(-3px 3px 0 rgba(0, 38, 255, 0.5))
+					drop-shadow(3px -3px 0 rgba(0, 38, 255, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(0, 38, 255, 0.5));
+
+	filter: drop-shadow(3px 3px 0 rgba(0, 38, 255, 0.5))
+			drop-shadow(-3px 3px 0 rgba(0, 38, 255, 0.5))
+			drop-shadow(3px -3px 0 rgba(0, 38, 255, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(0, 38, 255, 0.5));
+}
+
+.charAura7{
+	-webkit-filter: drop-shadow(3px 3px 0 rgba(255, 255, 255, 0.5))
+					drop-shadow(-3px 3px 0 rgba(255, 255, 255, 0.5))
+					drop-shadow(3px -3px 0 rgba(255, 255, 255, 0.5))
+		  			drop-shadow(-3px -2px 0 rgba(255, 255, 255, 0.5));
+
+	filter: drop-shadow(3px 3px 0 rgba(255, 255, 255, 0.5))
+			drop-shadow(-3px 3px 0 rgba(255, 255, 255, 0.5))
+			drop-shadow(3px -3px 0 rgba(255, 255, 255, 0.5))
+		    drop-shadow(-3px -3px 0 rgba(255, 255, 255, 0.5));
+}
+
 .centerText{ text-align: center; }
 .rightText{ text-align: right; }
 .whiteText{ color: white; }

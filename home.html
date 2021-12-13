@@ -27,7 +27,7 @@
 			</div>
 			<!--Unit sprite-->
 			<div class="charDiv" ng-class="isPaired(char.partner, char.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : char.unitType.indexOf('Aura1') != -1, 'charAura2' : char.unitType.indexOf('Aura2') != -1, 'charAura3' : char.unitType.indexOf('Aura3') != -1}">
+				<img ng-src="{{char.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura4': char.unitType.indexOf('Aura4') != -1, 'charAura5': char.unitType.indexOf('Aura5') != -1, 'charAura6': char.unitType.indexOf('Aura6') != -1, 'charAura7': char.unitType.indexOf('Aura7') != -1, 'charAura1' : char.unitType.indexOf('Aura1') != -1, 'charAura2' : char.unitType.indexOf('Aura2') != -1, 'charAura3' : char.unitType.indexOf('Aura3') != -1}">
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="char.currHp > char.maxHp ? 'purpleHp' : 'blueHp'" ng-style="{width: calculateHPWidth(char.currHp, char.maxHp)+'px'}"></div>
 				<div class="healthBarBorder"></div>
@@ -45,7 +45,7 @@
 				<img class="leftEnemyNum" ng-src="{{getPairUnitNum(enemy.name)}}" />
 			</div>
 			<div class="charDiv" ng-class="isPaired(enemy.partner, enemy.stance) ? 'mapCharOffsetRight' : 'mapCharOffsetNone'">
-				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura1' : enemy.unitType.indexOf('Aura1') != -1, 'charAura2' : enemy.unitType.indexOf('Aura2') != -1}">
+				<img ng-src="{{enemy.spriteUrl}}" class="mapCharCentered" ng-class="{'charAura4': enemy.unitType.indexOf('Aura4') != -1, 'charAura5': enemy.unitType.indexOf('Aura5') != -1, 'charAura6': enemy.unitType.indexOf('Aura6') != -1, 'charAura7': enemy.unitType.indexOf('Aura7') != -1, 'charAura1' : enemy.unitType.indexOf('Aura1') != -1, 'charAura2' : enemy.unitType.indexOf('Aura2') != -1, 'charAura3' : enemy.unitType.indexOf('Aura3') != -1}">
 				<img class="enemyNum" ng-src="{{getEnemyNum(enemy.name)}}" />
 				<div class="healthBarBack"></div>
 				<div class="healthBarFront" ng-class="enemy.currHp > enemy.maxHp ? 'purpleHp' : 'redHp'" ng-style="{width:calculateHPWidth(enemy.currHp, enemy.maxHp)+'px'}"></div>
